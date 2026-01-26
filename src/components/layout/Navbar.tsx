@@ -8,20 +8,20 @@ const navLinks = [
   { name: "Home", path: "/" },
   { name: "Roadmap Generator", path: "/ai-tool" },
   { name: "Learn", path: "/learn" },
-  { name: "FX Creator", path: "/fx-creator" },
-  { name: "Help", path: "/help" },
   { name: "About", path: "/about" },
 ];
 
 export function Navbar() {
   const { user, isAdmin, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  // Set light theme as default
   useEffect(() => {
-    document.documentElement.classList.add("dark");
+    document.documentElement.classList.remove("dark");
+    setIsDark(false);
   }, []);
 
   useEffect(() => {

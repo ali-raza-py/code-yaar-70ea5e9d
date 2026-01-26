@@ -77,6 +77,54 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_tools: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_featured: boolean | null
+          is_published: boolean | null
+          name: string
+          sort_order: number | null
+          updated_at: string
+          url: string | null
+          use_case: string | null
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          name: string
+          sort_order?: number | null
+          updated_at?: string
+          url?: string | null
+          use_case?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          name?: string
+          sort_order?: number | null
+          updated_at?: string
+          url?: string | null
+          use_case?: string | null
+        }
+        Relationships: []
+      }
       ai_usage_limits: {
         Row: {
           created_at: string
@@ -592,6 +640,39 @@ export type Database = {
           activity_type?: string
           created_at?: string
           id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          completed: boolean | null
+          created_at: string
+          id: string
+          last_accessed_at: string | null
+          progress_percentage: number | null
+          section_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          progress_percentage?: number | null
+          section_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          progress_percentage?: number | null
+          section_id?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []

@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ResourcesAdmin } from "@/components/admin/ResourcesAdmin";
 import { HelpFAQAdmin } from "@/components/admin/HelpFAQAdmin";
+import { AIToolsAdmin } from "@/components/admin/AIToolsAdmin";
+import { UserProgressAdmin } from "@/components/admin/UserProgressAdmin";
 import {
   Shield,
   Users,
@@ -13,12 +15,13 @@ import {
   ToggleLeft,
   ToggleRight,
   HelpCircle,
+  Brain,
+  Activity,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
 
-type Tab = "users" | "resources" | "help";
+type Tab = "users" | "resources" | "help" | "ai-tools" | "progress";
 
 interface Profile {
   id: string;
@@ -31,7 +34,7 @@ interface Profile {
 export default function Admin() {
   const { user, isAdmin } = useAuth();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<Tab>("resources");
+  const [activeTab, setActiveTab] = useState<Tab>("ai-tools");
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState<Profile[]>([]);
@@ -90,6 +93,14 @@ export default function Admin() {
     );
   }
 
+  const tabs = [
+    { id: "ai-tools" as Tab, label: "AI Tools", icon: Brain },
+    { id: "resources" as Tab, label: "Resources", icon: FileText },
+    { id: "help" as Tab, label: "Help & FAQ", icon: HelpCircle },
+    { id: "progress" as Tab, label: "User Progress", icon: Activity },
+    { id: "users" as Tab, label: "Users", icon: Users },
+  ];
+
   return (
     <div className="min-h-screen py-12">
       <div className="container mx-auto px-4">
@@ -103,51 +114,36 @@ export default function Admin() {
             Manage <span className="text-gradient">Code-Yaar</span>
           </h1>
           <p className="text-muted-foreground mt-2">
-            Manage resources, users, and help content
+            Manage AI tools, resources, help content, and user progress
           </p>
         </div>
 
         {/* Tabs */}
         <div className="flex gap-2 mb-6 flex-wrap">
-          <button
-            onClick={() => setActiveTab("resources")}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${
-              activeTab === "resources"
-                ? "bg-primary text-primary-foreground shadow-glow"
-                : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-            }`}
-          >
-            <FileText className="w-4 h-4" />
-            Resources
-          </button>
-          <button
-            onClick={() => setActiveTab("help")}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${
-              activeTab === "help"
-                ? "bg-primary text-primary-foreground shadow-glow"
-                : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-            }`}
-          >
-            <HelpCircle className="w-4 h-4" />
-            Help & FAQ
-          </button>
-          <button
-            onClick={() => setActiveTab("users")}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${
-              activeTab === "users"
-                ? "bg-primary text-primary-foreground shadow-glow"
-                : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-            }`}
-          >
-            <Users className="w-4 h-4" />
-            Users
-          </button>
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all ${
+                activeTab === tab.id
+                  ? "bg-primary text-primary-foreground shadow-glow"
+                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              }`}
+            >
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {/* Content */}
+        {activeTab === "ai-tools" && <AIToolsAdmin />}
+        
         {activeTab === "resources" && <ResourcesAdmin />}
         
         {activeTab === "help" && <HelpFAQAdmin />}
+
+        {activeTab === "progress" && <UserProgressAdmin />}
 
         {activeTab === "users" && (
           <>

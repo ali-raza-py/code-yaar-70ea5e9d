@@ -4,7 +4,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ProgressTracker } from "@/components/dashboard/ProgressTracker";
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { ContactSection } from "@/components/home/ContactSection";
-import { ArrowRight, Brain, GraduationCap, Zap, Users, Rocket, Sparkles, Code2, ChevronDown, HelpCircle } from "lucide-react";
+import { HelpFAQSection } from "@/components/home/HelpFAQSection";
+import { ArrowRight, Brain, GraduationCap, Zap, Users, Rocket, Sparkles, Code2, ChevronDown } from "lucide-react";
 
 export default function Home() {
   const { user } = useAuth();
@@ -117,22 +118,8 @@ export default function Home() {
       {user && (
         <section className="py-20 bg-card/50 border-y border-border">
           <div className="container mx-auto px-6">
-            <div className="max-w-4xl mx-auto space-y-6">
+            <div className="max-w-4xl mx-auto">
               <ProgressTracker />
-              {/* Quick Help Link */}
-              <Link 
-                to="/help" 
-                className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/50 transition-all group"
-              >
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <HelpCircle className="w-5 h-5 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium text-foreground group-hover:text-primary transition-colors">Need Help?</p>
-                  <p className="text-sm text-muted-foreground">Browse FAQs and find answers</p>
-                </div>
-                <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-              </Link>
             </div>
           </div>
         </section>
@@ -257,6 +244,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Help & FAQ Section - At the bottom of Home page only */}
+      <HelpFAQSection />
 
       {/* Contact Section */}
       <ContactSection />
