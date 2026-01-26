@@ -250,7 +250,7 @@ export default function FXCreator() {
   return (
     <>
       <Helmet>
-        <title>FX Creator | Code Fague</title>
+        <title>FX Creator | Code-Yaar</title>
         <meta
           name="description"
           content="Create, preview, and export stunning CSS effects for your coding projects with FX Creator."

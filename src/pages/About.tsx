@@ -26,7 +26,7 @@ export default function About() {
               <div className="flex flex-col items-center text-center">
                 <div className="relative group mb-6">
                   <div className="w-28 h-28 rounded-full overflow-hidden ring-4 ring-border group-hover:ring-primary/30 transition-all duration-300">
-                    <img src={developerPhoto} alt="Ali Raza - CEO of Code Fague" className="w-full h-full object-cover object-center" loading="eager" decoding="async" />
+                    <img src={developerPhoto} alt="Ali Raza - CEO of Code-Yaar" className="w-full h-full object-cover object-center" loading="eager" decoding="async" />
                   </div>
                   <div className="absolute -bottom-1 -right-1 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-semibold shadow-soft">
                     CEO
@@ -36,7 +36,7 @@ export default function About() {
                 <h2 className="font-display text-xl font-bold mb-1 text-foreground">Ali Raza</h2>
                 <p className="text-primary font-medium text-sm mb-4">Chief Executive Officer</p>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                  Visionary leader driving Code Fague's mission to revolutionize programming education for students worldwide.
+                  Visionary leader driving Code-Yaar's mission to revolutionize programming education for students worldwide.
                 </p>
 
                 <div className="flex gap-2">
@@ -45,7 +45,7 @@ export default function About() {
                       <Linkedin className="w-4 h-4" />
                     </Button>
                   </a>
-                  <a href="mailto:ali@codefague.com">
+                  <a href="mailto:ali@codeyaar.com">
                     <Button variant="outline" size="sm" className="hover-lift">
                       <Mail className="w-4 h-4" />
                     </Button>
@@ -69,7 +69,7 @@ export default function About() {
                 <h2 className="font-display text-xl font-bold mb-1 text-foreground">Abdullah</h2>
                 <p className="text-primary font-medium text-sm mb-4">Chief Technology Officer</p>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                  Technical architect behind Code Fague's AI-powered platform, building scalable systems for learners.
+                  Technical architect behind Code-Yaar's AI-powered platform, building scalable systems for learners.
                 </p>
 
                 <div className="flex gap-2">
@@ -78,7 +78,7 @@ export default function About() {
                       <Linkedin className="w-4 h-4" />
                     </Button>
                   </a>
-                  <a href="mailto:abdullah@codefague.com">
+                  <a href="mailto:abdullah@codeyaar.com">
                     <Button variant="outline" size="sm" className="hover-lift">
                       <Mail className="w-4 h-4" />
                     </Button>
@@ -123,7 +123,7 @@ export default function About() {
             <h2 className="font-display text-xl font-bold mb-5 text-foreground">Our Story</h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Code Fague started with a simple frustration: learning to code was harder than it needed to be. 
+                Code-Yaar started with a simple frustration: learning to code was harder than it needed to be. 
                 Resources were either too complex, too shallow, or just plain boring.
               </p>
               <p>
@@ -131,7 +131,7 @@ export default function About() {
                 that doesn't just solve problems but helps you truly understand them.
               </p>
               <p>
-                Today, Code Fague serves thousands of students who want to learn programming the right way—with 
+                Today, Code-Yaar serves thousands of students who want to learn programming the right way—with 
                 clarity, practical projects, and AI assistance that actually makes sense.
               </p>
             </div>

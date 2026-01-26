@@ -196,7 +196,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       toast({
         title: "Account created!",
-        description: "Welcome to Code Fague. You're now signed in.",
+        description: "Welcome to Code-Yaar. You're now signed in.",
       });
 
       return { error: null };
@@ -223,7 +223,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       toast({
         title: "Welcome back!",
-        description: "You're now signed in to Code Fague.",
+        description: "You're now signed in to Code-Yaar.",
       });
 
       return { error: null };

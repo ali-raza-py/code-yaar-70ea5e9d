@@ -98,7 +98,7 @@ export default function AITool() {
         <div className="text-center max-w-md">
           <Lock className="w-16 h-16 mx-auto mb-6 text-primary" />
           <h1 className="font-display text-3xl font-bold mb-4">Sign In Required</h1>
-          <p className="text-muted-foreground mb-6">Access Code Fague's learning platform by signing in.</p>
+          <p className="text-muted-foreground mb-6">Access Code-Yaar's learning platform by signing in.</p>
           <Link to="/auth"><Button variant="default" size="lg">Sign In</Button></Link>
         </div>
       </div>
@@ -111,7 +111,7 @@ export default function AITool() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-2">
-            Code <span className="text-gradient">Fague</span>
+            Code<span className="text-gradient">-Yaar</span>
           </h1>
           <p className="text-muted-foreground">Choose a language. Follow the path. Become job-ready.</p>
         </div>

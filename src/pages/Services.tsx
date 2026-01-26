@@ -90,7 +90,7 @@ export default function Services() {
                 },
                 {
                   title: "Growing Together",
-                  description: "Be part of the journey as Code Fague expands its services.",
+                  description: "Be part of the journey as Code-Yaar expands its services.",
                 },
               ].map((item) => (
                 <div key={item.title} className="flex items-start gap-4">

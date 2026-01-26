@@ -13,7 +13,7 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
               <div className="w-9 h-9 rounded-lg bg-gradient-primary flex items-center justify-center">
                 <Code2 className="w-5 h-5 text-primary-foreground" />
               </div>
-              <span className="font-display font-bold text-xl">Code Fague</span>
+              <span className="font-display font-bold text-xl">Code-Yaar</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               AI-powered code education platform built to help students learn programming effectively.
@@ -75,7 +75,7 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
                 <Linkedin className="w-5 h-5" />
               </a>
               <a
-                href="mailto:hello@codefague.com"
+                href="mailto:hello@codeyaar.com"
                 className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all"
               >
                 <Mail className="w-5 h-5" />
@@ -86,7 +86,7 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Code Fague. Built for learning.
+            © {new Date().getFullYear()} Code-Yaar. Built for learning.
           </p>
           <p className="text-sm text-muted-foreground">
             Education-first AI assistant
