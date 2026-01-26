@@ -41,7 +41,7 @@ export const Footer = forwardRef<HTMLElement>((_, ref) => {
           <div className="space-y-4">
             <h4 className="font-display font-semibold text-foreground">Company</h4>
             <ul className="space-y-2">
-              {["About", "Contact"].map((item) => (
+              {["About", "Contact", "Help"].map((item) => (
                 <li key={item}>
                   <Link
                     to={`/${item.toLowerCase()}`}
