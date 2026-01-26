@@ -10,11 +10,9 @@ import { ForcedPasswordUpdateWrapper } from "@/components/auth/ForcedPasswordUpd
 import Home from "./pages/Home";
 import AITool from "./pages/AITool";
 import Learn from "./pages/Learn";
-import FXCreator from "./pages/FXCreator";
 import Services from "./pages/Services";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import Help from "./pages/Help";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
@@ -39,11 +37,9 @@ const App = () => (
                       <Route path="/" element={<Home />} />
                       <Route path="/ai-tool" element={<AITool />} />
                       <Route path="/learn" element={<Learn />} />
-                      <Route path="/fx-creator" element={<FXCreator />} />
                       <Route path="/services" element={<Services />} />
                       <Route path="/about" element={<About />} />
                       <Route path="/contact" element={<Contact />} />
-                      <Route path="/help" element={<Help />} />
                       <Route
                         path="/admin"
                         element={
