@@ -234,7 +234,7 @@ export default function Home() {
               Ready to Level Up<span className="text-primary">?</span>
             </h2>
             <p className="text-muted-foreground mb-10 text-lg max-w-lg mx-auto">
-              Join Code Fague today and experience the future of programming education.
+              Join Code-Yaar today and experience the future of programming education.
             </p>
             <Link to="/auth">
               <Button variant="hero" size="xl" className="font-semibold group text-lg px-8 py-6">

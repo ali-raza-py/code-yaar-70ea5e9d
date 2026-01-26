@@ -214,7 +214,7 @@ export default function Auth() {
           <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow">
             <Code2 className="w-6 h-6 text-primary-foreground" />
           </div>
-          <span className="font-display font-bold text-2xl">Code Fague</span>
+          <span className="font-display font-bold text-2xl">Code-Yaar</span>
         </Link>
 
         {isBlocked && (
@@ -237,7 +237,7 @@ export default function Auth() {
             <p className="text-sm text-muted-foreground">
               {isLogin
                 ? "Sign in to access the roadmap generator and save your progress"
-                : "Join Code Fague to start your coding journey"}
+                : "Join Code-Yaar to start your coding journey"}
             </p>
           </div>
 

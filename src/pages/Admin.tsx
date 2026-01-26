@@ -316,7 +316,7 @@ export default function Admin() {
             <span className="text-sm font-medium text-primary">Admin Dashboard</span>
           </div>
           <h1 className="font-display text-3xl md:text-4xl font-bold">
-            Manage <span className="text-gradient">Code Fague</span>
+            Manage <span className="text-gradient">Code-Yaar</span>
           </h1>
         </div>
 
