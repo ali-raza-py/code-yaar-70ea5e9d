@@ -9,6 +9,7 @@ const navLinks = [
   { name: "Roadmap Generator", path: "/ai-tool" },
   { name: "Learn", path: "/learn" },
   { name: "FX Creator", path: "/fx-creator" },
+  { name: "Help", path: "/help" },
   { name: "About", path: "/about" },
 ];
 
