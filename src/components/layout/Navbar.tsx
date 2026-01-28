@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Moon, Sun, LogOut, Shield, User, Code2 } from "lucide-react";
+import { Menu, X, Moon, Sun, LogOut, Shield, User } from "lucide-react";
+import codeYaarLogo from "@/assets/code-yaar-logo.png";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -34,19 +35,19 @@ export function Navbar() {
   };
 
   return (
-    <nav
-      className="fixed top-0 left-0 right-0 z-50 bg-transparent"
-    >
-      <div className="flex items-center justify-between h-16 px-4 md:px-6">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-lg bg-gradient-primary flex items-center justify-center shadow-glow">
-              <Code2 className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="font-display font-bold text-xl text-foreground group-hover:text-primary transition-colors">
-              Code-Yaar
-            </span>
-          </Link>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent">
+      <div 
+        className="flex items-center justify-between"
+        style={{ paddingTop: '14px', paddingLeft: '16px', paddingRight: '16px', paddingBottom: '14px' }}
+      >
+        {/* Logo */}
+        <Link to="/" className="flex items-center">
+          <img 
+            src={codeYaarLogo} 
+            alt="Code Yaar" 
+            className="h-8 md:h-10 lg:h-11 w-auto object-contain"
+          />
+        </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
