@@ -58,8 +58,7 @@ export function Navbar() {
             <img 
               src={codeYaarLogo} 
               alt="Code Yaar" 
-              className="h-8 md:h-10 lg:h-12 w-auto object-contain"
-              style={{ imageRendering: 'crisp-edges' }}
+              className="h-12 md:h-14 lg:h-16 w-auto object-contain"
             />
           </Link>
 
