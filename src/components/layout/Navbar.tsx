@@ -38,14 +38,13 @@ export function Navbar() {
     <nav
       className="fixed top-0 left-0 right-0 z-50 bg-transparent"
     >
-      <div className="container mx-auto px-3 md:px-4">
-        <div className="flex items-center justify-between py-3">
+      <div className="flex items-center justify-between h-24 md:h-28 lg:h-32 px-3 md:px-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center pl-1 md:pl-2">
+          <Link to="/" className="flex items-center">
             <img 
               src={codeYaarLogo} 
               alt="Code Yaar" 
-              className="h-20 md:h-24 lg:h-28 w-auto object-contain"
+              className="h-16 md:h-20 lg:h-24 w-auto object-contain"
             />
           </Link>
 
@@ -125,56 +124,55 @@ export function Navbar() {
               {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
           </div>
-        </div>
-
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden py-4 border-t border-border animate-fade-in">
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                    location.pathname === link.path
-                      ? "text-primary bg-primary/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              {isAdmin && (
-                <Link
-                  to="/admin"
-                  onClick={() => setIsOpen(false)}
-                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                    location.pathname === "/admin"
-                      ? "text-primary bg-primary/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                  }`}
-                >
-                  <Shield className="w-4 h-4 inline mr-1" />
-                  Admin
-                </Link>
-              )}
-              {user ? (
-                <Button variant="outline" className="w-full mt-2" onClick={handleSignOut}>
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sign Out
-                </Button>
-              ) : (
-                <Link to="/auth" onClick={() => setIsOpen(false)}>
-                  <Button variant="hero" className="w-full mt-2">
-                    Get Started
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="md:hidden px-3 pb-4">
+          <div className="flex flex-col gap-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setIsOpen(false)}
+                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                  location.pathname === link.path
+                    ? "text-primary bg-primary/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                onClick={() => setIsOpen(false)}
+                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                  location.pathname === "/admin"
+                    ? "text-primary bg-primary/10"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                <Shield className="w-4 h-4 inline mr-1" />
+                Admin
+              </Link>
+            )}
+            {user ? (
+              <Button variant="outline" className="w-full mt-2" onClick={handleSignOut}>
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
+            ) : (
+              <Link to="/auth" onClick={() => setIsOpen(false)}>
+                <Button variant="hero" className="w-full mt-2">
+                  Get Started
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
