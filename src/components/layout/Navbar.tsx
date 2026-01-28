@@ -35,10 +35,10 @@ export function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-transparent border-none shadow-none">
+    <nav className="fixed top-0 left-0 right-0 z-50" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
       <div 
         className="flex items-center justify-between"
-        style={{ paddingTop: '14px', paddingLeft: '16px', paddingRight: '16px', paddingBottom: '14px' }}
+        style={{ paddingTop: '14px', paddingLeft: '16px', paddingRight: '16px', paddingBottom: '14px', border: 'none' }}
       >
         {/* Logo */}
         <Link to="/" className="flex items-center">
