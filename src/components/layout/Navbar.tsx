@@ -45,7 +45,7 @@ export function Navbar() {
           <img 
             src={codeYaarLogo} 
             alt="Code Yaar" 
-            className="h-8 md:h-10 lg:h-11 w-auto object-contain"
+            className="h-12 md:h-14 lg:h-16 w-auto object-contain"
           />
         </Link>
 
