@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Code2, Moon, Sun, LogOut, Shield, User } from "lucide-react";
+import { Menu, X, Moon, Sun, LogOut, Shield, User } from "lucide-react";
+import codeYaarLogo from "@/assets/code-yaar-logo.png";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -50,16 +51,16 @@ export function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-3 md:px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-lg bg-gradient-primary flex items-center justify-center shadow-glow">
-              <Code2 className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span className="font-display font-bold text-xl text-foreground group-hover:text-primary transition-colors">
-              Code-Yaar
-            </span>
+          <Link to="/" className="flex items-center pl-1 md:pl-2">
+            <img 
+              src={codeYaarLogo} 
+              alt="Code Yaar" 
+              className="h-8 md:h-10 lg:h-12 w-auto object-contain"
+              style={{ imageRendering: 'crisp-edges' }}
+            />
           </Link>
 
           {/* Desktop Navigation */}
