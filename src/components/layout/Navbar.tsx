@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Moon, Sun, LogOut, Shield, User } from "lucide-react";
-import codeYaarLogo from "@/assets/code-yaar-logo.png";
+import codeYaarLogo from "@/assets/code-yaar-logo-transparent.png";
 
 const navLinks = [
   { name: "Home", path: "/" },
@@ -16,21 +16,12 @@ export function Navbar() {
   const { user, isAdmin, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
   // Set light theme as default
   useEffect(() => {
     document.documentElement.classList.remove("dark");
     setIsDark(false);
-  }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleTheme = () => {
@@ -45,20 +36,16 @@ export function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/80 backdrop-blur-lg border-b border-border"
-          : "bg-transparent"
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 bg-transparent"
     >
       <div className="container mx-auto px-3 md:px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center pl-1 md:pl-2">
             <img 
               src={codeYaarLogo} 
               alt="Code Yaar" 
-              className="h-16 md:h-20 lg:h-24 w-auto object-contain"
+              className="h-20 md:h-24 lg:h-28 w-auto object-contain"
             />
           </Link>
 
