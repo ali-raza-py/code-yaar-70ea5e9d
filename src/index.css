@@ -120,6 +120,25 @@
     @apply bg-background text-foreground font-sans;
     font-feature-settings: "cv11", "ss01";
     letter-spacing: -0.011em;
+    margin: 0;
+  }
+
+  /* Force a clean, separator-free navbar/header (prevents 1px lines from borders/shadows/pseudo-elements) */
+  header,
+  nav,
+  .navbar {
+    border-bottom: none !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    background: transparent !important;
+  }
+
+  header::after,
+  nav::after,
+  header::before,
+  nav::before {
+    display: none !important;
   }
 
   h1, h2, h3, h4, h5, h6 {
