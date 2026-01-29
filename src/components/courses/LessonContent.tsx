@@ -118,7 +118,7 @@ export function LessonContent({
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             {isCompleted ? (
-              <div className="flex items-center gap-2 text-green-500">
+              <div className="flex items-center gap-2 text-primary">
                 <CheckCircle className="w-5 h-5" />
                 <span className="font-medium">Completed!</span>
               </div>
@@ -126,7 +126,7 @@ export function LessonContent({
               <Button
                 onClick={onComplete}
                 disabled={isLoading}
-                className="bg-green-600 hover:bg-green-700"
+                variant="hero"
               >
                 {isLoading ? (
                   "Saving..."
