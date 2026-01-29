@@ -2,14 +2,16 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Moon, Sun, LogOut, Shield, User } from "lucide-react";
+import { Menu, X, Moon, Sun, LogOut, Shield, User, LayoutDashboard } from "lucide-react";
 import codeYaarLogo from "@/assets/code-yaar-logo.png";
 
 const navLinks = [
   { name: "Home", path: "/" },
-  { name: "Roadmap Generator", path: "/ai-tool" },
-  { name: "Learn", path: "/learn" },
-  { name: "About", path: "/about" },
+  { name: "Dashboard", path: "/dashboard" },
+  { name: "Roadmap", path: "/ai-tool" },
+  { name: "Courses", path: "/courses" },
+  { name: "Algorithms", path: "/algorithms" },
+  { name: "Doubts", path: "/doubts" },
 ];
 
 export function Navbar() {
