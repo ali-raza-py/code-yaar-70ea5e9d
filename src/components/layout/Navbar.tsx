@@ -11,7 +11,6 @@ const navLinks = [
   { name: "Roadmap", path: "/ai-tool" },
   { name: "Courses", path: "/courses" },
   { name: "DSA", path: "/algorithms" },
-  { name: "Doubts", path: "/doubts" },
 ];
 
 export function Navbar() {

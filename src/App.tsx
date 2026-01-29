@@ -22,7 +22,7 @@ import Onboarding from "./pages/Onboarding";
 import Courses from "./pages/Courses";
 import CourseViewer from "./pages/CourseViewer";
 import Algorithms from "./pages/Algorithms";
-import Doubts from "./pages/Doubts";
+
 
 const queryClient = new QueryClient();
 
@@ -54,7 +54,7 @@ const App = () => (
                         <Route path="/courses/:slug" element={<CourseViewer />} />
                         <Route path="/courses/:slug/:lessonSlug" element={<CourseViewer />} />
                         <Route path="/algorithms" element={<Algorithms />} />
-                        <Route path="/doubts" element={<Doubts />} />
+                        
                         <Route
                           path="/admin"
                           element={
