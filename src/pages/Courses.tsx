@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, Filter, BookOpen, Clock, Star, ChevronRight } from "lucide-react";
+import { Search, BookOpen, Clock, Star, ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Input } from "@/components/ui/input";
@@ -47,6 +48,7 @@ const DIFFICULTIES = [
 ];
 
 export default function Courses() {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState<Course[]>([]);
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -257,7 +259,10 @@ export default function Courses() {
                       </div>
                     </div>
 
-                    <Button className="w-full group">
+                    <Button 
+                      className="w-full group"
+                      onClick={() => navigate(`/courses/${course.slug}`)}
+                    >
                       Start Course
                       <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>

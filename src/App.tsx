@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Onboarding from "./pages/Onboarding";
 import Courses from "./pages/Courses";
+import CourseViewer from "./pages/CourseViewer";
 import Algorithms from "./pages/Algorithms";
 import Doubts from "./pages/Doubts";
 
@@ -50,6 +51,8 @@ const App = () => (
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/courses" element={<Courses />} />
+                        <Route path="/courses/:slug" element={<CourseViewer />} />
+                        <Route path="/courses/:slug/:lessonSlug" element={<CourseViewer />} />
                         <Route path="/algorithms" element={<Algorithms />} />
                         <Route path="/doubts" element={<Doubts />} />
                         <Route

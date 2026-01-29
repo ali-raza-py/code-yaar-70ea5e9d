@@ -6,6 +6,7 @@ import { ResourcesAdmin } from "@/components/admin/ResourcesAdmin";
 import { HelpFAQAdmin } from "@/components/admin/HelpFAQAdmin";
 import { AIToolsAdmin } from "@/components/admin/AIToolsAdmin";
 import { UserProgressAdmin } from "@/components/admin/UserProgressAdmin";
+import { CoursesAdmin } from "@/components/admin/CoursesAdmin";
 import {
   Shield,
   Users,
@@ -17,11 +18,12 @@ import {
   HelpCircle,
   Brain,
   Activity,
+  BookOpen,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-type Tab = "users" | "resources" | "help" | "ai-tools" | "progress";
+type Tab = "users" | "resources" | "help" | "ai-tools" | "progress" | "courses";
 
 interface Profile {
   id: string;
@@ -34,7 +36,7 @@ interface Profile {
 export default function Admin() {
   const { user, isAdmin } = useAuth();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<Tab>("ai-tools");
+  const [activeTab, setActiveTab] = useState<Tab>("courses");
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState<Profile[]>([]);
@@ -94,6 +96,7 @@ export default function Admin() {
   }
 
   const tabs = [
+    { id: "courses" as Tab, label: "Courses", icon: BookOpen },
     { id: "ai-tools" as Tab, label: "AI Tools", icon: Brain },
     { id: "resources" as Tab, label: "Resources", icon: FileText },
     { id: "help" as Tab, label: "Help & FAQ", icon: HelpCircle },
@@ -137,6 +140,8 @@ export default function Admin() {
         </div>
 
         {/* Content */}
+        {activeTab === "courses" && <CoursesAdmin />}
+
         {activeTab === "ai-tools" && <AIToolsAdmin />}
         
         {activeTab === "resources" && <ResourcesAdmin />}
