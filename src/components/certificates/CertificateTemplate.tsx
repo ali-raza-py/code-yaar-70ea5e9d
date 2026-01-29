@@ -40,11 +40,11 @@ export const CertificateTemplate = forwardRef<HTMLDivElement, CertificateTemplat
           }}
         />
 
-        {/* Header with logos */}
+        {/* Header with logo */}
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "flex-start",
             alignItems: "flex-start",
             marginBottom: "15mm",
           }}
@@ -57,29 +57,6 @@ export const CertificateTemplate = forwardRef<HTMLDivElement, CertificateTemplat
               style={{ height: "40px", width: "auto" }}
               crossOrigin="anonymous"
             />
-          </div>
-
-          {/* Lovable Logo */}
-          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16 28C22.6274 28 28 22.6274 28 16C28 9.37258 22.6274 4 16 4C9.37258 4 4 9.37258 4 16C4 22.6274 9.37258 28 16 28Z"
-                fill="#FFD700"
-              />
-              <path
-                d="M16 8L18.5 13H23.5L19.5 16.5L21 22L16 18.5L11 22L12.5 16.5L8.5 13H13.5L16 8Z"
-                fill="#1a1a1a"
-              />
-            </svg>
-            <span style={{ fontSize: "14px", fontWeight: 600, color: "#1a1a1a" }}>
-              Powered by Lovable
-            </span>
           </div>
         </div>
 
