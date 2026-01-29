@@ -52,9 +52,29 @@ Sorted: [11, 12, 22, 25, 34, 64, 90]`,
   "quick-sort": `Original: [3, 6, 8, 10, 1, 2, 1]
 Sorted: [1, 1, 2, 3, 6, 8, 10]`,
   "merge-sort": `Sorted: [3, 9, 10, 27, 38, 43, 82]`,
+  "insertion-sort": `Sorted: [5, 6, 11, 12, 13]`,
   "binary-search": `Element found at index: 3`,
   "linear-search": `Element found at index: 3`,
   "fibonacci-dp": `Fib(10) = 55`,
+  "factorial-recursion": `0! = 1
+1! = 1
+2! = 2
+3! = 6
+4! = 24
+5! = 120`,
+  "tower-of-hanoi": `Tower of Hanoi solution for 3 disks:
+Move disk 1 from A to C
+Move disk 2 from A to B
+Move disk 1 from C to B
+Move disk 3 from A to C
+Move disk 1 from B to A
+Move disk 2 from B to C
+Move disk 1 from A to C`,
+  "lcs": `LCS length: 4`,
+  "activity-selection": `Selected activities: [(1, 2), (3, 4), (5, 7), (8, 9)]
+Maximum activities: 4`,
+  "two-pointers": `'racecar' is palindrome: True
+Two sum indices: [1, 3]`,
   "linked-list-basics": `List: [1, 2, 3]`,
   "binary-tree-traversal": `Inorder: 4 2 5 1 3
 Preorder: 1 2 4 5 3
