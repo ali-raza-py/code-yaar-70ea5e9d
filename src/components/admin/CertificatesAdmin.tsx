@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Award,
   Search,
@@ -9,6 +9,9 @@ import {
   BookOpen,
   Calendar,
   AlertTriangle,
+  Eye,
+  Download,
+  FileText,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -24,6 +27,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { CertificateTemplate } from "@/components/certificates/CertificateTemplate";
 
 interface Certificate {
   id: string;
@@ -45,9 +49,12 @@ export function CertificatesAdmin() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [revokeDialogOpen, setRevokeDialogOpen] = useState(false);
+  const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
   const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
   const [revokeReason, setRevokeReason] = useState("");
   const [isRevoking, setIsRevoking] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const certificateRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchCertificates();
@@ -82,6 +89,57 @@ export function CertificatesAdmin() {
     setSelectedCertificate(certificate);
     setRevokeReason("");
     setRevokeDialogOpen(true);
+  };
+
+  const handlePreviewClick = (certificate: Certificate) => {
+    setSelectedCertificate(certificate);
+    setPreviewDialogOpen(true);
+  };
+
+  const handleDownloadPDF = async () => {
+    if (!selectedCertificate) return;
+    
+    setIsDownloading(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      
+      const html2pdf = (await import("html2pdf.js")).default;
+      const element = certificateRef.current;
+      
+      if (!element) throw new Error("Certificate element not found");
+      
+      const opt = {
+        margin: 0,
+        filename: `${selectedCertificate.course_name.replace(/\s+/g, "-")}-Certificate-${selectedCertificate.verification_id}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+      };
+      
+      await html2pdf().set(opt).from(element).save();
+      
+      toast({
+        title: "Certificate Downloaded",
+        description: "PDF saved successfully.",
+      });
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast({
+        title: "Download Failed",
+        description: "Could not generate the certificate PDF.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
+  const formatDateLong = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 
   const handleRevoke = async () => {
@@ -274,9 +332,18 @@ export function CertificatesAdmin() {
                       <Button
                         variant="ghost"
                         size="sm"
+                        onClick={() => handlePreviewClick(cert)}
+                        title="Preview Certificate"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         onClick={() =>
                           window.open(`/verify/${cert.verification_id}`, "_blank")
                         }
+                        title="View Verification Page"
                       >
                         <ExternalLink className="w-4 h-4" />
                       </Button>
@@ -286,6 +353,7 @@ export function CertificatesAdmin() {
                           size="sm"
                           onClick={() => handleRevokeClick(cert)}
                           className="text-destructive hover:text-destructive"
+                          title="Revoke Certificate"
                         >
                           <Ban className="w-4 h-4" />
                         </Button>
@@ -355,6 +423,56 @@ export function CertificatesAdmin() {
                 </>
               ) : (
                 "Revoke Certificate"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Preview Dialog */}
+      <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] overflow-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="w-5 h-5 text-primary" />
+              Certificate Preview
+            </DialogTitle>
+            <DialogDescription>
+              Preview the certificate template. You can download it as a PDF.
+            </DialogDescription>
+          </DialogHeader>
+          {selectedCertificate && (
+            <div className="space-y-4">
+              <div className="overflow-auto border rounded-lg">
+                <div style={{ transform: "scale(0.4)", transformOrigin: "top left", width: "250%", height: "auto" }}>
+                  <CertificateTemplate
+                    ref={certificateRef}
+                    studentName={selectedCertificate.student_name}
+                    courseName={selectedCertificate.course_name}
+                    startDate={formatDateLong(selectedCertificate.start_date)}
+                    endDate={formatDateLong(selectedCertificate.end_date)}
+                    issueDate={formatDateLong(selectedCertificate.issue_date)}
+                    verificationId={selectedCertificate.verification_id}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPreviewDialogOpen(false)}>
+              Close
+            </Button>
+            <Button onClick={handleDownloadPDF} disabled={isDownloading}>
+              {isDownloading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Download className="w-4 h-4 mr-2" />
+                  Download PDF
+                </>
               )}
             </Button>
           </DialogFooter>
