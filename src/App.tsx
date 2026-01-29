@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { WelcomeProvider } from "@/contexts/WelcomeContext";
 import { Layout } from "@/components/layout/Layout";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { ForcedPasswordUpdateWrapper } from "@/components/auth/ForcedPasswordUpdateWrapper";
@@ -31,40 +32,42 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <ForcedPasswordUpdateWrapper>
-            <Routes>
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/onboarding" element={<Onboarding />} />
-              <Route
-                path="*"
-                element={
-                  <Layout>
-                    <Routes>
-                      <Route path="/" element={<Home />} />
-                      <Route path="/ai-tool" element={<AITool />} />
-                      <Route path="/learn" element={<Learn />} />
-                      <Route path="/services" element={<Services />} />
-                      <Route path="/about" element={<About />} />
-                      <Route path="/contact" element={<Contact />} />
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/courses" element={<Courses />} />
-                      <Route path="/algorithms" element={<Algorithms />} />
-                      <Route path="/doubts" element={<Doubts />} />
-                      <Route
-                        path="/admin"
-                        element={
-                          <ProtectedRoute requireAdmin>
-                            <Admin />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </Layout>
-                }
-              />
-            </Routes>
-          </ForcedPasswordUpdateWrapper>
+          <WelcomeProvider>
+            <ForcedPasswordUpdateWrapper>
+              <Routes>
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/onboarding" element={<Onboarding />} />
+                <Route
+                  path="*"
+                  element={
+                    <Layout>
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/ai-tool" element={<AITool />} />
+                        <Route path="/learn" element={<Learn />} />
+                        <Route path="/services" element={<Services />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/courses" element={<Courses />} />
+                        <Route path="/algorithms" element={<Algorithms />} />
+                        <Route path="/doubts" element={<Doubts />} />
+                        <Route
+                          path="/admin"
+                          element={
+                            <ProtectedRoute requireAdmin>
+                              <Admin />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </Layout>
+                  }
+                />
+              </Routes>
+            </ForcedPasswordUpdateWrapper>
+          </WelcomeProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
