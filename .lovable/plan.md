@@ -1,358 +1,232 @@
 
-# Code-Yaar Platform Transformation Plan
+# Platform Enhancement Plan - Programiz-Style Learning System
 
-## Overview
-Transform Code-Yaar into a comprehensive, futuristic learning ecosystem combining AI-powered roadmaps, courses, algorithms library, community features, and gamification - all with a polished, professional design.
+## Current State Analysis
 
----
+Your project already has a solid foundation:
+- **Authentication**: Complete signup/login with password validation, Google OAuth, and JWT
+- **User Management**: Roles system (admin/user), profiles, and preferences
+- **Courses Table**: 12 sample courses already exist (Python, JavaScript, React, HTML/CSS, etc.)
+- **Welcome Popup**: Animated glassmorphism popup for new/returning users
+- **Dashboard**: XP, levels, streaks, badges tracking
+- **Admin Panel**: User management, AI tools, resources, FAQ management
 
-## Phase 1: Database Foundation
+## What's Missing
 
-### New Tables Required
-
-**User Profile Enhancement**
-- `user_preferences` - Store onboarding answers, learning goals, time availability
-- `user_gamification` - XP points, level, badges earned, streak data
-
-**Courses System**
-- `courses` - Course metadata (title, description, category, difficulty, thumbnail)
-- `course_lessons` - Individual lessons with content, video URLs, order
-- `lesson_progress` - Track user completion, time spent per lesson
-
-**Algorithms Library**
-- `algorithms` - Algorithm metadata (name, category, complexity, description)
-- `algorithm_content` - Detailed content, code examples in multiple languages
-- `algorithm_categories` - Sorting, Searching, DP, Graphs, Trees, etc.
-
-**Query/Doubt System**
-- `doubts` - User submitted questions with topic tags
-- `doubt_responses` - Answers from community/admins
-- `doubt_votes` - Upvote/downvote tracking
-
-**Roadmap Persistence**
-- `saved_roadmaps` - Store generated roadmaps per user
-- `roadmap_progress` - Track step completion, unlock status
-
-**Gamification**
-- `badges` - Badge definitions and requirements
-- `user_badges` - Badges earned by users
-- `daily_challenges` - Daily coding challenges
-- `leaderboard_entries` - Weekly/monthly leaderboard snapshots
+The main gap is **real lesson content** - the `course_lessons` table exists but is empty. We need to populate it with structured lessons like Programiz (explanation, code examples, outputs, practice tasks).
 
 ---
 
-## Phase 2: Smart Onboarding System (Duolingo-style)
+## Phase 1: Database - Populate Course Lessons
 
-### Features
-- Full-screen animated questionnaire flow
-- One question per screen with smooth transitions
-- Progress indicator (1/6, 2/6...)
-- Skip and Back buttons
-- Animated card transitions using Framer-like effects
+### Insert Real Lesson Content
 
-### Questions Flow
-1. Coding experience level
-2. User type (student/self-learner/job seeker)
-3. Learning goal (Web Dev/AI/Game Dev/Cybersecurity)
-4. Daily time availability
-5. Learning preference (projects/problems/theory)
-6. Content format preference (video/reading/challenges)
+For each of the 12 existing courses, add structured lessons with:
+- Title and slug
+- Lesson content (markdown with explanations)
+- Code examples embedded in content
+- Lesson order and XP rewards
+- Lesson type (theory, code-along, project)
 
-### New Components
-- `OnboardingFlow.tsx` - Main container with step management
-- `OnboardingQuestion.tsx` - Individual question card with animations
-- `OnboardingProgress.tsx` - Visual progress indicator
+**Example structure for Python course** (18 lessons):
+1. Introduction to Python
+2. Variables and Data Types
+3. Python Operators
+4. Input and Output
+5. Control Flow: if-else
+6. Loops: for and while
+7. Functions
+8. Lists and Tuples
+9. Dictionaries
+10. String Methods
+11. File Handling
+12. Error Handling
+13. Object-Oriented Programming
+14. Classes and Objects
+15. Inheritance
+16. Modules and Packages
+17. Working with JSON
+18. Final Project
 
-### Implementation
-- Store answers in `user_preferences` table
-- Auto-redirect new users to onboarding on first login
-- Use preferences to customize roadmap generation prompts
-
----
-
-## Phase 3: Enhanced AI Roadmap Generator
-
-### Upgrades
-- **Goal Selection**: Web Dev, AI, Game Dev, Cybersecurity, DSA, Mobile
-- **Time-based Planning**: Factor daily availability into step scheduling
-- **Visual Timeline**: Horizontal/vertical timeline with estimated dates
-- **Progress System**: Stage-based unlocking with completion gates
-- **Project Integration**: Include real project milestones at each stage
-- **Save & Resume**: Persist roadmaps to database
-
-### New Components
-- `GoalSelector.tsx` - Grid of learning goal options
-- `TimeAvailabilitySelector.tsx` - Daily time commitment picker
-- `RoadmapTimeline.tsx` - Visual timeline with progress
-- `RoadmapStageCard.tsx` - Enhanced stage cards with unlock state
-- `ProjectMilestone.tsx` - Project recommendation cards
-
-### Edge Function Updates
-- Update `generate-roadmap` to accept goal, time, and user preferences
-- Generate more contextual content based on user background
-- Include project recommendations and estimated completion times
+Each lesson will include:
+- Clear explanation text
+- Multiple code examples with expected output
+- Practice problem suggestions
 
 ---
 
-## Phase 4: Free Courses System
+## Phase 2: Course Viewer Page
 
-### Structure
-- Course categories: Web, Python, AI/ML, DSA, DevOps, Databases
-- Each course: 10-20 lessons with text + video placeholders
-- Lesson types: Theory, Code-along, Quiz, Project
+### New Component: `CourseViewer.tsx`
 
-### Features
-- Course catalog with filters (category, difficulty, duration)
-- Lesson viewer with markdown rendering
-- Code examples with syntax highlighting
-- Mini-quiz system after lessons
-- Completion tracking with XP rewards
-- "Mark Complete" functionality
+Create a full course experience page at `/courses/:slug`:
 
-### New Components
-- `CourseCatalog.tsx` - Grid view of all courses
-- `CourseCard.tsx` - Individual course preview
-- `CourseViewer.tsx` - Full course interface
-- `LessonContent.tsx` - Lesson display with tabs
-- `LessonQuiz.tsx` - Interactive quiz component
-- `CourseProgress.tsx` - Visual progress through course
+**Features:**
+- Sidebar navigation with lesson list
+- Lesson progress indicators (completed/current/locked)
+- Main content area with markdown rendering
+- Code blocks with syntax highlighting (using highlight.js)
+- Language tabs for multi-language examples
+- "Mark Complete" button awarding XP
+- "Next Lesson" navigation
+- Progress percentage display
 
-### Admin Features
-- Add/edit courses via Admin panel
-- Manage lessons with rich text editor
-- Publish/unpublish courses
+### New Component: `LessonContent.tsx`
+
+Renders individual lesson with:
+- Theory sections with formatted markdown
+- Code examples with copy button
+- Output/result display
+- Practice problem links
+- Estimated reading time
 
 ---
 
-## Phase 5: Algorithms & Data Structures Library
+## Phase 3: Admin Course Management
 
-### Categories
-- Sorting (Bubble, Quick, Merge, Heap, etc.)
-- Searching (Linear, Binary, BFS, DFS)
-- Recursion & Backtracking
-- Dynamic Programming
-- Graph Algorithms
-- Trees & Linked Lists
-- Greedy Algorithms
+### New Admin Tab: `CoursesAdmin.tsx`
 
-### Algorithm Page Structure
-1. **Header**: Name, complexity badge, difficulty
-2. **Explanation**: Detailed markdown content
-3. **Complexity Analysis**: Time & Space with Big-O
-4. **Code Examples**: Tabs for Python, C++, JavaScript
-5. **Visual Animation**: Step-by-step visualization placeholder
-6. **Practice Links**: LeetCode/HackerRank problem references
+Add a "Courses" tab to the admin panel:
+- List all courses with edit/delete
+- Add new course form
+- Manage lessons within each course
+- Rich text editor for lesson content
+- Reorder lessons via drag-and-drop (UI placeholder)
+- Toggle publish status
 
-### New Components
-- `AlgorithmLibrary.tsx` - Main library with categories
-- `AlgorithmCard.tsx` - Preview card in list
-- `AlgorithmViewer.tsx` - Full algorithm page
-- `ComplexityBadge.tsx` - Visual complexity indicator
-- `CodeTabs.tsx` - Multi-language code display
-- `AlgorithmAnimation.tsx` - Visualization placeholder
+### New Component: `LessonEditor.tsx`
 
-### Search & Filter
-- Full-text search across algorithms
-- Filter by category, difficulty, complexity
-- Sort by name, difficulty, popularity
+Form for creating/editing lessons:
+- Title and slug
+- Markdown content editor
+- Code example fields with language selector
+- XP reward setting
+- Order position
 
 ---
 
-## Phase 6: Query/Doubt System
+## Phase 4: Progress Tracking Integration
 
-### Features
-- Submit doubts with topic selection
-- View all community questions
-- Like/upvote helpful answers
-- Admin priority answering
-- AI auto-suggestion placeholder
+### Update `lesson_progress` table usage
 
-### New Components
-- `DoubtSubmission.tsx` - Question submission form
-- `DoubtList.tsx` - Paginated list of questions
-- `DoubtCard.tsx` - Question preview with vote count
-- `DoubtViewer.tsx` - Full question with answers
-- `AnswerForm.tsx` - Response submission
-- `VoteButtons.tsx` - Upvote/downvote interface
+When user completes a lesson:
+1. Insert/update `lesson_progress` record
+2. Award XP to `user_gamification`
+3. Update `total_lessons_completed` count
+4. Check for badge unlocks
+5. Update course completion percentage
 
-### Topic Categories
-- Algorithms
-- Courses
-- Roadmap
-- General CS
-- Career
+### New Hook: `useCourseProgress.ts`
+
+Manages:
+- Fetching user's progress for a course
+- Marking lessons complete
+- Calculating completion percentage
+- Determining next unlocked lesson
 
 ---
 
-## Phase 7: User Dashboard
+## Phase 5: Enhanced Dashboard
 
-### Features
-- Progress overview with stats
-- XP, Level, Streak display
-- Badge showcase
-- Saved roadmaps
-- Recent activity
-- Course progress
-- Algorithm bookmarks
+### Show Enrolled Courses
 
-### New Components
-- `Dashboard.tsx` - Main dashboard page
-- `StatCard.tsx` - Individual stat display
-- `XPProgress.tsx` - Level progress bar
-- `BadgeGrid.tsx` - Earned badges display
-- `RecentActivity.tsx` - Activity timeline
-- `SavedRoadmaps.tsx` - Roadmap cards
+Update Dashboard to display:
+- Currently enrolled courses with progress bars
+- "Resume Learning" button linking to last lesson
+- Recently completed lessons
+- Recommended next courses based on preferences
 
 ---
 
-## Phase 8: Gamification System
+## Phase 6: UI Refinements
 
-### XP System
-- Complete lesson: +50 XP
-- Finish course: +500 XP
-- Complete roadmap step: +100 XP
-- Answer doubt: +25 XP
-- Daily login streak: +10 XP per day
+### Code Display Component: `CodeBlock.tsx`
 
-### Levels
-- Level 1-5: Beginner Coder
-- Level 6-15: Developer
-- Level 16-30: Senior Developer
-- Level 31+: Master Coder
+Features:
+- Syntax highlighting via highlight.js
+- Language badge
+- Copy to clipboard button
+- Line numbers option
+- Dark theme matching app
 
-### Badges
-- First Step (complete first lesson)
-- Algorithm Ace (complete 10 algorithms)
-- Roadmap Runner (complete a roadmap)
-- Helper (answer 5 doubts)
-- Streak Master (7-day streak)
+### Output Display Component: `OutputBlock.tsx`
 
-### New Components
-- `XPNotification.tsx` - Animated XP gain popup
-- `LevelUpModal.tsx` - Level up celebration
-- `BadgeUnlockModal.tsx` - New badge notification
-- `StreakCounter.tsx` - Daily streak display
+Shows expected output:
+- Terminal-style appearance
+- Collapsible for long outputs
 
 ---
 
-## Phase 9: Design & Animation Overhaul
+## Technical Implementation Details
 
-### Theme Updates
-- Darker, more futuristic color palette option
-- Glassmorphism effects on cards
-- Floating particles background
-- Enhanced gradient overlays
+### Database Operations
 
-### Animation Library
-- Page transitions with slide/fade
-- Card hover effects with 3D transforms
-- Progress bar animations
-- Skeleton loading states
-- Micro-interactions on buttons
+**Insert approximately 200+ lessons** across 12 courses:
+- Python: 18 lessons
+- JavaScript: 20 lessons
+- HTML/CSS: 15 lessons
+- React: 30 lessons
+- Node.js: 22 lessons
+- TypeScript: 14 lessons
+- Data Structures: 25 lessons
+- Algorithms: 28 lessons
+- ML Basics: 35 lessons
+- Docker: 20 lessons
+- SQL: 16 lessons
+- Cybersecurity: 12 lessons
 
-### New CSS
-- Glassmorphism utilities
-- Particle background component
-- Enhanced shadow system
-- Gradient text effects
-- Smooth scroll behaviors
+### New Files to Create
 
-### Components
-- `ParticleBackground.tsx` - Animated particle effect
-- `GlassCard.tsx` - Glassmorphism card wrapper
-- `PageTransition.tsx` - Route transition wrapper
-- `AnimatedCounter.tsx` - Number animation
-- `SkeletonLoader.tsx` - Content loading states
+```text
+src/pages/CourseViewer.tsx         # Full course page
+src/components/courses/
+  ├── LessonContent.tsx            # Lesson display
+  ├── LessonSidebar.tsx            # Navigation sidebar
+  ├── CodeBlock.tsx                # Syntax-highlighted code
+  ├── OutputBlock.tsx              # Output display
+  └── ProgressIndicator.tsx        # Lesson progress dots
 
----
+src/components/admin/
+  └── CoursesAdmin.tsx             # Admin course management
 
-## Phase 10: Extra Features (UI Placeholders)
+src/hooks/
+  └── useCourseProgress.ts         # Progress tracking hook
+```
 
-### Components to Add
-- `DailyChallenge.tsx` - Daily coding challenge card
-- `Leaderboard.tsx` - Top learners ranking
-- `ProjectShowcase.tsx` - User project gallery
-- `ResumeBuilder.tsx` - Coming soon placeholder
-- `InternshipSection.tsx` - Resources/opportunities
+### Route Updates
 
----
+Add to `App.tsx`:
+```
+/courses/:slug  →  CourseViewer
+```
 
-## Phase 11: Admin Panel Enhancements
+### Navbar Update
 
-### New Admin Tabs
-- Courses Management
-- Algorithms Management
-- Doubts/Queries Management
-- User Stats Overview
-- Content Moderation
-
-### Features
-- CRUD for courses and lessons
-- CRUD for algorithms
-- Answer doubts with priority
-- View user statistics
-- Manage badges and rewards
-
----
-
-## Phase 12: Navigation & Routing
-
-### New Routes
-- `/dashboard` - User dashboard
-- `/courses` - Course catalog
-- `/courses/:id` - Course viewer
-- `/algorithms` - Algorithm library
-- `/algorithms/:id` - Algorithm page
-- `/doubts` - Query system
-- `/leaderboard` - Rankings
-
-### Navigation Updates
-- Add new sections to navbar
-- Mobile-friendly hamburger menu
-- Breadcrumb navigation
-
----
-
-## Technical Details
-
-### Database Migrations
-15+ new tables with proper RLS policies:
-- user_preferences, user_gamification
-- courses, course_lessons, lesson_progress
-- algorithms, algorithm_content, algorithm_categories
-- doubts, doubt_responses, doubt_votes
-- saved_roadmaps, roadmap_progress
-- badges, user_badges, daily_challenges, leaderboard_entries
-
-### Edge Function Updates
-- Enhance `generate-roadmap` with preference-aware prompts
-- Add `generate-course-content` for AI-assisted content
-- Add `suggest-answer` for AI doubt suggestions
-
-### Component Count
-- ~50 new React components
-- Multiple new pages
-- Enhanced admin panel
-
-### Responsive Design
-- Mobile-first approach
-- Touch-friendly interactions
-- Optimized for all screen sizes
+Ensure "Courses" link is prominent in navigation.
 
 ---
 
 ## Implementation Order
 
-1. **Foundation**: Database tables + RLS policies
-2. **Onboarding**: Smart questionnaire flow
-3. **Design**: Theme updates + animations
-4. **Dashboard**: User progress tracking
-5. **Roadmap**: Enhanced AI generator
-6. **Courses**: Learning system
-7. **Algorithms**: Knowledge library
-8. **Gamification**: XP, levels, badges
-9. **Doubts**: Community Q&A
-10. **Admin**: Management features
-11. **Extras**: Placeholders for future features
+1. **Seed lesson data** - Insert 50 initial lessons (Python + JavaScript courses) for testing
+2. **Create CourseViewer page** - Main learning interface
+3. **Add code display components** - Syntax highlighting, copy, output
+4. **Implement progress tracking** - Mark complete, XP awards
+5. **Update Dashboard** - Show enrolled courses
+6. **Add admin management** - CRUD for courses and lessons
+7. **Seed remaining lessons** - Complete all 12 courses
+8. **Polish and test** - Ensure smooth learning experience
 
-This is a significant transformation requiring multiple implementation phases. Should we proceed with the first phase focusing on database foundation and smart onboarding system?
+---
+
+## Result
+
+After implementation, users will be able to:
+- Browse 12 structured programming courses
+- Read lessons with explanations and code examples
+- See syntax-highlighted code with copy functionality
+- Track their progress with XP and completion percentage
+- Resume from where they left off
+- Earn badges for course completions
+
+The platform will function like Programiz with a dark, modern, professional design - all powered by the existing database and backend.
