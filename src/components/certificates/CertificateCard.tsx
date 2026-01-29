@@ -1,10 +1,18 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { Award, Download, ExternalLink, Calendar, CheckCircle } from "lucide-react";
+import { Award, Download, ExternalLink, Calendar, CheckCircle, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { CertificateTemplate } from "./CertificateTemplate";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface Certificate {
   id: string;
@@ -24,6 +32,7 @@ interface CertificateCardProps {
 export function CertificateCard({ certificate }: CertificateCardProps) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [previewDialogOpen, setPreviewDialogOpen] = useState(false);
   const certificateRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -132,6 +141,15 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
 
             <div className="flex gap-2 sm:flex-col">
               <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPreviewDialogOpen(true)}
+                className="flex-1 sm:flex-none"
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                Preview
+              </Button>
+              <Button
                 variant="default"
                 size="sm"
                 onClick={handleDownloadPDF}
@@ -154,6 +172,43 @@ export function CertificateCard({ certificate }: CertificateCardProps) {
           </div>
         </GlassCard>
       </motion.div>
+
+      {/* Preview Dialog */}
+      <Dialog open={previewDialogOpen} onOpenChange={setPreviewDialogOpen}>
+        <DialogContent className="max-w-[95vw] max-h-[95vh] overflow-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Award className="w-5 h-5 text-primary" />
+              Certificate Preview
+            </DialogTitle>
+            <DialogDescription>
+              This is your official certificate for completing {certificate.course_name}.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="overflow-auto border rounded-lg bg-muted/30">
+            <div style={{ transform: "scale(0.4)", transformOrigin: "top left", width: "250%", height: "auto" }}>
+              <CertificateTemplate
+                ref={certificateRef}
+                studentName={certificate.student_name}
+                courseName={certificate.course_name}
+                startDate={formatDate(certificate.start_date)}
+                endDate={formatDate(certificate.end_date)}
+                issueDate={formatDate(certificate.issue_date)}
+                verificationId={certificate.verification_id}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setPreviewDialogOpen(false)}>
+              Close
+            </Button>
+            <Button onClick={handleDownloadPDF} disabled={isGenerating}>
+              <Download className="w-4 h-4 mr-2" />
+              {isGenerating ? "Generating..." : "Download PDF"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Hidden certificate for PDF generation */}
       {showPreview && (
