@@ -125,11 +125,15 @@ export default function Algorithms() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Algorithms & Data Structures
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+            <Code2 className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">DSA Library</span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+            Data Structures & Algorithms
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Master the fundamentals of computer science. Learn algorithms with detailed explanations, code examples, and complexity analysis.
+            Master the fundamentals of computer science. Learn DSA with detailed explanations, multi-language code examples, and complexity analysis.
           </p>
         </motion.div>
 
