@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, BookOpen, Clock, Star, ChevronRight } from "lucide-react";
+import { Search, BookOpen, Clock, Star, ChevronRight, Award, CheckCircle, ShieldCheck, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Input } from "@/components/ui/input";
@@ -296,6 +296,129 @@ export default function Courses() {
             )}
           </GlassCard>
         )}
+
+        {/* Certificate Information Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-16"
+        >
+          <GlassCard className="p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 rounded-xl bg-primary/10">
+                <Award className="w-8 h-8 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">
+                  Earn Your Certificate
+                </h2>
+                <p className="text-muted-foreground">
+                  Get recognized for your achievements
+                </p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Who Gets Certificate */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5 text-primary" />
+                  Certificate Requirements
+                </h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-xs font-bold text-primary">1</span>
+                    </div>
+                    <div>
+                      <p className="text-foreground font-medium">Complete All Lessons</p>
+                      <p className="text-sm text-muted-foreground">
+                        Finish 100% of the course lessons to unlock your certificate
+                      </p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-xs font-bold text-primary">2</span>
+                    </div>
+                    <div>
+                      <p className="text-foreground font-medium">Be a Registered User</p>
+                      <p className="text-sm text-muted-foreground">
+                        You must have a Code Yaar account to receive certificates
+                      </p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-xs font-bold text-primary">3</span>
+                    </div>
+                    <div>
+                      <p className="text-foreground font-medium">Automatic Issuance</p>
+                      <p className="text-sm text-muted-foreground">
+                        Certificate is automatically issued upon course completion
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Verification Info */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-primary" />
+                  Certificate Verification
+                </h3>
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg bg-primary/5 border border-primary/10">
+                    <p className="text-foreground font-medium mb-2">Unique Verification ID</p>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Each certificate has a unique ID (e.g., <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">CY-XXXX-XXXX-XXXX</code>) that can be verified by employers or institutions.
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-muted/50">
+                    <p className="text-foreground font-medium mb-2">How to Verify</p>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Anyone can verify a certificate's authenticity using our verification portal.
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => navigate("/verify")}
+                      className="gap-2"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Go to Verification Portal
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Certificate Features */}
+            <div className="mt-8 pt-6 border-t border-border">
+              <h3 className="text-lg font-semibold text-foreground mb-4">What's Included in Your Certificate</h3>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span className="text-sm text-foreground">Your full name</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span className="text-sm text-foreground">Course name & details</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span className="text-sm text-foreground">Completion dates</span>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                  <span className="text-sm text-foreground">Unique verification ID</span>
+                </div>
+              </div>
+            </div>
+          </GlassCard>
+        </motion.div>
       </div>
     </div>
   );
