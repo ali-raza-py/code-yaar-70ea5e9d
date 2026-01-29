@@ -371,6 +371,68 @@ export type Database = {
         }
         Relationships: []
       }
+      certificates: {
+        Row: {
+          course_id: string
+          course_name: string
+          created_at: string
+          end_date: string
+          id: string
+          is_revoked: boolean
+          issue_date: string
+          revoke_reason: string | null
+          revoked_at: string | null
+          revoked_by: string | null
+          start_date: string
+          student_name: string
+          updated_at: string
+          user_id: string
+          verification_id: string
+        }
+        Insert: {
+          course_id: string
+          course_name: string
+          created_at?: string
+          end_date: string
+          id?: string
+          is_revoked?: boolean
+          issue_date?: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
+          start_date: string
+          student_name: string
+          updated_at?: string
+          user_id: string
+          verification_id: string
+        }
+        Update: {
+          course_id?: string
+          course_name?: string
+          created_at?: string
+          end_date?: string
+          id?: string
+          is_revoked?: boolean
+          issue_date?: string
+          revoke_reason?: string | null
+          revoked_at?: string | null
+          revoked_by?: string | null
+          start_date?: string
+          student_name?: string
+          updated_at?: string
+          user_id?: string
+          verification_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificates_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_lessons: {
         Row: {
           content: string | null
@@ -1675,6 +1737,7 @@ export type Database = {
         }
         Returns: string
       }
+      generate_verification_id: { Args: never; Returns: string }
       get_security_status: { Args: { p_user_id: string }; Returns: Json }
       has_role: {
         Args: {
@@ -1684,6 +1747,39 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: never; Returns: boolean }
+      issue_certificate: {
+        Args: {
+          p_course_id: string
+          p_course_name: string
+          p_end_date: string
+          p_start_date: string
+          p_student_name: string
+          p_user_id: string
+        }
+        Returns: {
+          course_id: string
+          course_name: string
+          created_at: string
+          end_date: string
+          id: string
+          is_revoked: boolean
+          issue_date: string
+          revoke_reason: string | null
+          revoked_at: string | null
+          revoked_by: string | null
+          start_date: string
+          student_name: string
+          updated_at: string
+          user_id: string
+          verification_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "certificates"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       log_admin_action: {
         Args: {
           action_type: string

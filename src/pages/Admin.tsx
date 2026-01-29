@@ -7,6 +7,7 @@ import { HelpFAQAdmin } from "@/components/admin/HelpFAQAdmin";
 import { AIToolsAdmin } from "@/components/admin/AIToolsAdmin";
 import { UserProgressAdmin } from "@/components/admin/UserProgressAdmin";
 import { CoursesAdmin } from "@/components/admin/CoursesAdmin";
+import { CertificatesAdmin } from "@/components/admin/CertificatesAdmin";
 import {
   Shield,
   Users,
@@ -19,11 +20,12 @@ import {
   Brain,
   Activity,
   BookOpen,
+  Award,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-type Tab = "users" | "resources" | "help" | "ai-tools" | "progress" | "courses";
+type Tab = "users" | "resources" | "help" | "ai-tools" | "progress" | "courses" | "certificates";
 
 interface Profile {
   id: string;
@@ -97,6 +99,7 @@ export default function Admin() {
 
   const tabs = [
     { id: "courses" as Tab, label: "Courses", icon: BookOpen },
+    { id: "certificates" as Tab, label: "Certificates", icon: Award },
     { id: "ai-tools" as Tab, label: "AI Tools", icon: Brain },
     { id: "resources" as Tab, label: "Resources", icon: FileText },
     { id: "help" as Tab, label: "Help & FAQ", icon: HelpCircle },
@@ -141,6 +144,8 @@ export default function Admin() {
 
         {/* Content */}
         {activeTab === "courses" && <CoursesAdmin />}
+
+        {activeTab === "certificates" && <CertificatesAdmin />}
 
         {activeTab === "ai-tools" && <AIToolsAdmin />}
         

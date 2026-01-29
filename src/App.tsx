@@ -22,6 +22,7 @@ import Onboarding from "./pages/Onboarding";
 import Courses from "./pages/Courses";
 import CourseViewer from "./pages/CourseViewer";
 import Algorithms from "./pages/Algorithms";
+import VerifyCertificate from "./pages/VerifyCertificate";
 
 
 const queryClient = new QueryClient();
@@ -54,6 +55,7 @@ const App = () => (
                         <Route path="/courses/:slug" element={<CourseViewer />} />
                         <Route path="/courses/:slug/:lessonSlug" element={<CourseViewer />} />
                         <Route path="/algorithms" element={<Algorithms />} />
+                        <Route path="/verify/:certificateId" element={<VerifyCertificate />} />
                         
                         <Route
                           path="/admin"
