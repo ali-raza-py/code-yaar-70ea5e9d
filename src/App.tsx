@@ -22,6 +22,7 @@ import Onboarding from "./pages/Onboarding";
 import Courses from "./pages/Courses";
 import CourseViewer from "./pages/CourseViewer";
 import Algorithms from "./pages/Algorithms";
+import AlgorithmDetail from "./pages/AlgorithmDetail";
 import VerifyCertificate from "./pages/VerifyCertificate";
 
 
@@ -55,6 +56,7 @@ const App = () => (
                         <Route path="/courses/:slug" element={<CourseViewer />} />
                         <Route path="/courses/:slug/:lessonSlug" element={<CourseViewer />} />
                         <Route path="/algorithms" element={<Algorithms />} />
+                        <Route path="/algorithms/:slug" element={<AlgorithmDetail />} />
                         <Route path="/verify/:certificateId" element={<VerifyCertificate />} />
                         
                         <Route

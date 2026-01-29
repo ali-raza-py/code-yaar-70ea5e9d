@@ -239,6 +239,7 @@ export default function Algorithms() {
                               <GlassCard
                                 key={algorithm.id}
                                 className="p-4 flex items-center justify-between cursor-pointer group"
+                                onClick={() => window.location.href = `/algorithms/${algorithm.slug}`}
                               >
                                 <div className="flex items-center gap-4">
                                   <div className="p-2 rounded-lg bg-primary/10">
