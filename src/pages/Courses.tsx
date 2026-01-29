@@ -36,6 +36,7 @@ const CATEGORIES = [
   { value: "dsa", label: "Data Structures" },
   { value: "devops", label: "DevOps" },
   { value: "databases", label: "Databases" },
+  { value: "cybersecurity", label: "Cybersecurity" },
 ];
 
 const DIFFICULTIES = [

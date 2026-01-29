@@ -1,7 +1,18 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+
+// Store for welcome callback - set by WelcomeProvider
+let welcomeCallback: ((userName: string, isNewUser: boolean) => void) | null = null;
+
+export const setWelcomeCallback = (cb: (userName: string, isNewUser: boolean) => void) => {
+  welcomeCallback = cb;
+};
+
+export const clearWelcomeCallback = () => {
+  welcomeCallback = null;
+};
 
 interface PasswordStrengthInfo {
   needsUpdate: boolean;
@@ -199,6 +210,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         description: "Welcome to Code-Yaar. You're now signed in.",
       });
 
+      // Trigger welcome popup for new users
+      if (welcomeCallback && signUpData.user) {
+        const userName = fullName || signUpData.user.email?.split("@")[0] || "Coder";
+        setTimeout(() => {
+          welcomeCallback?.(userName, true);
+        }, 500);
+      }
+
       return { error: null };
     } catch (error) {
       return { error: error as Error };
@@ -225,6 +244,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Welcome back!",
         description: "You're now signed in to Code-Yaar.",
       });
+
+      // Trigger welcome popup for returning users
+      if (welcomeCallback) {
+        const userName = email.split("@")[0] || "Coder";
+        setTimeout(() => {
+          welcomeCallback?.(userName, false);
+        }, 500);
+      }
 
       return { error: null };
     } catch (error) {
