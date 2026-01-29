@@ -23,6 +23,7 @@ export function useCourseProgress(courseId: string | undefined) {
   const [lessonProgress, setLessonProgress] = useState<Record<string, LessonProgress>>({});
   const [totalLessons, setTotalLessons] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [courseStartDate, setCourseStartDate] = useState<Date | null>(null);
 
   // Fetch progress data
   useEffect(() => {
@@ -41,22 +42,31 @@ export function useCourseProgress(courseId: string | undefined) {
       // Fetch lesson progress
       const { data: progressData, error: progressError } = await supabase
         .from("lesson_progress")
-        .select("lesson_id, is_completed, completed_at")
+        .select("lesson_id, is_completed, completed_at, created_at")
         .eq("user_id", user.id)
         .eq("course_id", courseId);
 
       if (progressError) throw progressError;
 
       const progressMap: Record<string, LessonProgress> = {};
+      let earliestDate: Date | null = null;
+      
       progressData?.forEach((p) => {
         progressMap[p.lesson_id] = {
           lesson_id: p.lesson_id,
           is_completed: p.is_completed || false,
           completed_at: p.completed_at,
         };
+        
+        // Track earliest progress date as course start date
+        const createdAt = new Date(p.created_at);
+        if (!earliestDate || createdAt < earliestDate) {
+          earliestDate = createdAt;
+        }
       });
 
       setLessonProgress(progressMap);
+      setCourseStartDate(earliestDate);
 
       // Get total lessons count
       const { count, error: countError } = await supabase
@@ -73,6 +83,81 @@ export function useCourseProgress(courseId: string | undefined) {
       setIsLoading(false);
     }
   };
+
+  const checkAndIssueCertificate = useCallback(
+    async (newCompletedCount: number) => {
+      if (!user || !courseId || newCompletedCount < totalLessons || totalLessons === 0) return;
+
+      try {
+        // Check if certificate already exists
+        const { data: existingCert } = await supabase
+          .from("certificates")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("course_id", courseId)
+          .single();
+
+        if (existingCert) return; // Already has certificate
+
+        // Get course details
+        const { data: course } = await supabase
+          .from("courses")
+          .select("title")
+          .eq("id", courseId)
+          .single();
+
+        if (!course) return;
+
+        // Get student name from profile
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .eq("user_id", user.id)
+          .single();
+
+        const studentName = profile?.full_name || user.email?.split("@")[0] || "Student";
+        const startDate = courseStartDate || new Date();
+        const endDate = new Date();
+
+        // Issue certificate using database function
+        const { error } = await supabase.rpc("issue_certificate", {
+          p_user_id: user.id,
+          p_course_id: courseId,
+          p_student_name: studentName,
+          p_course_name: course.title,
+          p_start_date: startDate.toISOString().split("T")[0],
+          p_end_date: endDate.toISOString().split("T")[0],
+        });
+
+        if (error) throw error;
+
+        toast({
+          title: "🎓 Certificate Earned!",
+          description: `Congratulations! You've completed ${course.title} and earned a certificate!`,
+        });
+
+        // Update gamification - increment courses completed
+        const { data: gamification } = await supabase
+          .from("user_gamification")
+          .select("total_courses_completed")
+          .eq("user_id", user.id)
+          .single();
+
+        if (gamification) {
+          await supabase
+            .from("user_gamification")
+            .update({
+              total_courses_completed: (gamification.total_courses_completed || 0) + 1,
+            })
+            .eq("user_id", user.id);
+        }
+
+      } catch (error) {
+        console.error("Error issuing certificate:", error);
+      }
+    },
+    [user, courseId, totalLessons, courseStartDate, toast]
+  );
 
   const markLessonComplete = useCallback(
     async (lessonId: string, xpReward: number = 50) => {
@@ -127,14 +212,25 @@ export function useCourseProgress(courseId: string | undefined) {
         await awardXP(xpReward);
 
         // Update local state
-        setLessonProgress((prev) => ({
-          ...prev,
-          [lessonId]: {
-            lesson_id: lessonId,
-            is_completed: true,
-            completed_at: new Date().toISOString(),
-          },
-        }));
+        setLessonProgress((prev) => {
+          const updated = {
+            ...prev,
+            [lessonId]: {
+              lesson_id: lessonId,
+              is_completed: true,
+              completed_at: new Date().toISOString(),
+            },
+          };
+          
+          // Check for course completion
+          const newCompletedCount = Object.values(updated).filter(p => p.is_completed).length;
+          if (newCompletedCount === totalLessons && totalLessons > 0) {
+            // Delay to allow state update
+            setTimeout(() => checkAndIssueCertificate(newCompletedCount), 500);
+          }
+          
+          return updated;
+        });
 
         toast({
           title: "🎉 Lesson Complete!",
@@ -152,7 +248,7 @@ export function useCourseProgress(courseId: string | undefined) {
         return false;
       }
     },
-    [user, courseId, toast]
+    [user, courseId, toast, totalLessons, checkAndIssueCertificate]
   );
 
   const awardXP = async (xp: number) => {
