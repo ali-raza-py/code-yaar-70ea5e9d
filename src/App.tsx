@@ -16,6 +16,11 @@ import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
+import Onboarding from "./pages/Onboarding";
+import Courses from "./pages/Courses";
+import Algorithms from "./pages/Algorithms";
+import Doubts from "./pages/Doubts";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +34,7 @@ const App = () => (
           <ForcedPasswordUpdateWrapper>
             <Routes>
               <Route path="/auth" element={<Auth />} />
+              <Route path="/onboarding" element={<Onboarding />} />
               <Route
                 path="*"
                 element={
@@ -40,6 +46,10 @@ const App = () => (
                       <Route path="/services" element={<Services />} />
                       <Route path="/about" element={<About />} />
                       <Route path="/contact" element={<Contact />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/courses" element={<Courses />} />
+                      <Route path="/algorithms" element={<Algorithms />} />
+                      <Route path="/doubts" element={<Doubts />} />
                       <Route
                         path="/admin"
                         element={
