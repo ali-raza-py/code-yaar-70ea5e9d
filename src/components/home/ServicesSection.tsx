@@ -51,16 +51,16 @@ export function ServicesSection() {
             {services.map((service) => (
               <div
                 key={service.title}
-                className="group p-6 rounded-xl bg-card border border-border hover:border-primary/50 transition-all duration-300"
+                className="group p-6 rounded-xl bg-card border border-border hover-card-smooth"
               >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 transition-all duration-300 ease-out group-hover:bg-primary/20 group-hover:scale-110">
                   <service.icon className="w-6 h-6 text-primary" />
                 </div>
                 <h3 className="font-display text-lg font-semibold mb-2">{service.title}</h3>
                 <p className="text-muted-foreground text-sm mb-4">{service.description}</p>
                 <ul className="space-y-1">
                   {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground transition-colors duration-300 group-hover:text-foreground">
                       <CheckCircle className="w-3.5 h-3.5 text-primary" />
                       {feature}
                     </li>
