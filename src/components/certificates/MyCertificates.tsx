@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Award, Loader2, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -31,7 +31,6 @@ export function MyCertificates() {
   const [isLoading, setIsLoading] = useState(true);
   const [samplePreviewOpen, setSamplePreviewOpen] = useState(false);
   const [userName, setUserName] = useState("Your Name");
-  const certificateRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (user) {
@@ -131,7 +130,6 @@ export function MyCertificates() {
             <div className="overflow-auto border rounded-lg bg-muted/30">
               <div style={{ transform: "scale(0.4)", transformOrigin: "top left", width: "250%", height: "auto" }}>
                 <CertificateTemplate
-                  ref={certificateRef}
                   studentName={userName}
                   courseName="Introduction to Python Programming"
                   startDate={getSampleDate()}
