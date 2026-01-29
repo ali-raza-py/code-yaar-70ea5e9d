@@ -67,10 +67,10 @@ export function CodeBlock({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl overflow-hidden border border-border bg-[#282c34] my-4"
+      className="rounded-xl overflow-hidden border border-border bg-code my-4"
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2 bg-[#21252b] border-b border-border/50">
+      <div className="flex items-center justify-between px-4 py-2 bg-secondary/50 border-b border-border/50">
         <div className="flex items-center gap-2">
           <Code className="w-4 h-4 text-primary" />
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
@@ -79,12 +79,12 @@ export function CodeBlock({
         </div>
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded hover:bg-white/5"
+          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded hover:bg-secondary/50"
         >
           {copied ? (
             <>
-              <Check className="w-3.5 h-3.5 text-green-500" />
-              <span className="text-green-500">Copied!</span>
+              <Check className="w-3.5 h-3.5 text-primary" />
+              <span className="text-primary">Copied!</span>
             </>
           ) : (
             <>
