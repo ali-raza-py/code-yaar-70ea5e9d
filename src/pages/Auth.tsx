@@ -3,7 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Code2, Mail, Lock, User, ArrowRight, Loader2, ShieldCheck, AlertTriangle, Eye, EyeOff } from "lucide-react";
+import { Code2, Mail, Lock, User, ArrowRight, Loader2, ShieldCheck, AlertTriangle, Eye, EyeOff, BookOpen, Award } from "lucide-react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { PasswordGenerator } from "@/components/auth/PasswordGenerator";
@@ -205,43 +205,90 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4">
-      <div className="fixed inset-0 bg-glow opacity-30 pointer-events-none" />
-      <div className="fixed top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-      
-      <div className="w-full max-w-md relative z-10">
-        <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center shadow-glow">
-            <Code2 className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <span className="font-display font-bold text-2xl">Code-Yaar</span>
-        </Link>
-
-        {isBlocked && (
-          <div className="mb-4 p-4 rounded-xl bg-destructive/10 border border-destructive/30 flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="text-sm font-medium text-destructive">Account Temporarily Locked</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Too many failed login attempts. Please wait {blockTimeRemaining} minutes before trying again.
-              </p>
+    <div className="min-h-screen flex bg-background">
+      {/* Left Side - Value Statement */}
+      <div className="hidden lg:flex lg:w-1/2 bg-slate-900 text-white flex-col justify-center px-12 xl:px-20 relative overflow-hidden">
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:48px_48px]" />
+        </div>
+        
+        <div className="relative z-10">
+          <Link to="/" className="flex items-center gap-3 mb-12">
+            <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
+              <Code2 className="w-6 h-6 text-slate-900" />
+            </div>
+            <span className="font-display font-bold text-2xl">Code-Yaar</span>
+          </Link>
+          
+          <h1 className="text-4xl xl:text-5xl font-bold leading-tight mb-6">
+            Learn real programming.
+            <br />
+            <span className="text-primary">Not tutorials.</span>
+          </h1>
+          
+          <p className="text-lg text-slate-400 mb-8 max-w-md">
+            Master programming with structured courses, hands-on practice, and AI-powered learning paths. Built by students, for students.
+          </p>
+          
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                <BookOpen className="w-4 h-4 text-primary" />
+              </div>
+              <span className="text-slate-300">Structured courses with real examples</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                <Code2 className="w-4 h-4 text-primary" />
+              </div>
+              <span className="text-slate-300">Algorithm library with code snippets</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                <Award className="w-4 h-4 text-primary" />
+              </div>
+              <span className="text-slate-300">Earn certificates upon completion</span>
             </div>
           </div>
-        )}
+        </div>
+      </div>
 
-        <div className="p-8 rounded-2xl bg-card border border-border shadow-soft">
-          <div className="text-center mb-8">
-            <h1 className="font-display text-2xl font-bold mb-2">
-              {isLogin ? "Welcome Back" : "Create Account"}
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              {isLogin
-                ? "Sign in to access the roadmap generator and save your progress"
-                : "Join Code-Yaar to start your coding journey"}
-            </p>
-          </div>
+      {/* Right Side - Auth Form */}
+      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md">
+          {/* Mobile Logo */}
+          <Link to="/" className="flex lg:hidden items-center justify-center gap-2 mb-8">
+            <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
+              <Code2 className="w-6 h-6 text-primary-foreground" />
+            </div>
+            <span className="font-display font-bold text-2xl">Code-Yaar</span>
+          </Link>
 
-          <div className="relative group">
+          {isBlocked && (
+            <div className="mb-4 p-4 rounded-xl bg-destructive/10 border border-destructive/30 flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-destructive">Account Temporarily Locked</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Too many failed login attempts. Please wait {blockTimeRemaining} minutes before trying again.
+                </p>
+              </div>
+            </div>
+          )}
+
+          <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+            <div className="text-center mb-8">
+              <h1 className="font-display text-2xl font-bold mb-2 text-foreground">
+                {isLogin ? "Welcome Back" : "Create Account"}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {isLogin
+                  ? "Sign in to continue your learning journey"
+                  : "Join Code-Yaar to start coding today"}
+              </p>
+            </div>
+
             <Button
               variant="outline"
               className="w-full mb-2"
@@ -256,197 +303,196 @@ export default function Auth() {
               </svg>
               Continue with Google
             </Button>
-            <p className="text-xs text-center text-muted-foreground mb-4">
-              Google login requires OAuth setup in project settings
+            <p className="text-xs text-center text-muted-foreground mb-6">
+              Google login requires OAuth setup
             </p>
-          </div>
 
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
-            </div>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {!isLogin && (
-              <div>
-                <label htmlFor="fullName" className="block text-sm font-medium mb-2">
-                  Full Name
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <Input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    placeholder="John Doe"
-                    maxLength={100}
-                    className="pl-10 bg-secondary/50"
-                  />
-                </div>
+            <div className="relative mb-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-border" />
               </div>
-            )}
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="you@example.com"
-                  required
-                  maxLength={255}
-                  className={`pl-10 bg-secondary/50 ${errors.email ? "border-destructive" : ""}`}
-                />
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">Or continue with email</span>
               </div>
-              {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <Input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  required
-                  maxLength={128}
-                  className={`pl-10 pr-10 bg-secondary/50 ${errors.password ? "border-destructive" : ""}`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-              {errors.password && <p className="text-destructive text-xs mt-1">{errors.password}</p>}
-              
-              {/* Password Strength Indicator */}
-              {!isLogin && formData.password && passwordStrength && (
-                <div className="mt-2 space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Strength:</span>
-                    <span className={`font-medium ${
-                      passwordStrength.label === "Weak" ? "text-destructive" :
-                      passwordStrength.label === "Medium" ? "text-yellow-500" :
-                      passwordStrength.label === "Good" ? "text-blue-500" : "text-green-500"
-                    }`}>
-                      {passwordStrength.label}
-                    </span>
-                  </div>
-                  <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                    <div
-                      className={`h-full transition-all duration-300 ${passwordStrength.color}`}
-                      style={{ width: `${passwordStrength.percentage}%` }}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {!isLogin && (
+                <div>
+                  <label htmlFor="fullName" className="block text-sm font-medium mb-2 text-foreground">
+                    Full Name
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Input
+                      id="fullName"
+                      name="fullName"
+                      type="text"
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      placeholder="John Doe"
+                      maxLength={100}
+                      className="pl-10"
                     />
                   </div>
                 </div>
               )}
 
-              {!isLogin && (
-                <div className="mt-3">
-                  <PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
-                </div>
-              )}
-            </div>
-
-            {!isLogin && (
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">
-                  Confirm Password
+                <label htmlFor="email" className="block text-sm font-medium mb-2 text-foreground">
+                  Email
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="you@example.com"
+                    required
+                    maxLength={255}
+                    className={`pl-10 ${errors.email ? "border-destructive" : ""}`}
+                  />
+                </div>
+                {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium mb-2 text-foreground">
+                  Password
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
-                    value={formData.confirmPassword}
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    value={formData.password}
                     onChange={handleChange}
                     placeholder="••••••••"
                     required
                     maxLength={128}
-                    className={`pl-10 pr-10 bg-secondary/50 ${errors.confirmPassword ? "border-destructive" : ""}`}
+                    className={`pl-10 pr-10 ${errors.password ? "border-destructive" : ""}`}
                   />
                   <button
                     type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
-                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                {errors.confirmPassword && (
-                  <p className="text-destructive text-xs mt-1">{errors.confirmPassword}</p>
+                {errors.password && <p className="text-destructive text-xs mt-1">{errors.password}</p>}
+                
+                {/* Password Strength Indicator */}
+                {!isLogin && formData.password && passwordStrength && (
+                  <div className="mt-2 space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-muted-foreground">Strength:</span>
+                      <span className={`font-medium ${
+                        passwordStrength.label === "Weak" ? "text-destructive" :
+                        passwordStrength.label === "Medium" ? "text-yellow-500" :
+                        passwordStrength.label === "Good" ? "text-blue-500" : "text-green-500"
+                      }`}>
+                        {passwordStrength.label}
+                      </span>
+                    </div>
+                    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                      <div
+                        className={`h-full transition-all duration-300 ${passwordStrength.color}`}
+                        style={{ width: `${passwordStrength.percentage}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {!isLogin && (
+                  <div className="mt-3">
+                    <PasswordGenerator onPasswordGenerated={handlePasswordGenerated} />
+                  </div>
                 )}
               </div>
-            )}
 
-            <Button
-              type="submit"
-              variant="hero"
-              className="w-full"
-              disabled={isLoading || isBlocked}
-            >
-              {isLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <>
-                  {isLogin ? "Sign In" : "Create Account"}
-                  <ArrowRight className="w-4 h-4" />
-                </>
+              {!isLogin && (
+                <div>
+                  <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-foreground">
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                    <Input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      placeholder="••••••••"
+                      required
+                      maxLength={128}
+                      className={`pl-10 pr-10 ${errors.confirmPassword ? "border-destructive" : ""}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  {errors.confirmPassword && (
+                    <p className="text-destructive text-xs mt-1">{errors.confirmPassword}</p>
+                  )}
+                </div>
               )}
-            </Button>
-          </form>
 
-          <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground justify-center">
-            <ShieldCheck className="w-3 h-3" />
-            <span>Secured with encryption</span>
+              <Button
+                type="submit"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                disabled={isLoading || isBlocked}
+              >
+                {isLoading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    {isLogin ? "Sign In" : "Create Account"}
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </>
+                )}
+              </Button>
+            </form>
+
+            <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground justify-center">
+              <ShieldCheck className="w-3 h-3" />
+              <span>Secured with encryption</span>
+            </div>
+
+            <p className="mt-6 text-center text-sm text-muted-foreground">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+              <button
+                type="button"
+                onClick={() => {
+                  setIsLogin(!isLogin);
+                  setErrors({});
+                  setIsBlocked(false);
+                }}
+                className="text-primary font-medium hover:underline"
+              >
+                {isLogin ? "Sign up" : "Sign in"}
+              </button>
+            </p>
           </div>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-            <button
-              type="button"
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setErrors({});
-                setIsBlocked(false);
-              }}
-              className="text-primary font-medium hover:underline"
+          <p className="mt-8 text-center">
+            <Link
+              to="/"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              {isLogin ? "Sign up" : "Sign in"}
-            </button>
+              ← Back to Home
+            </Link>
           </p>
         </div>
-
-        <p className="mt-8 text-center">
-          <Link
-            to="/"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            ← Back to Home
-          </Link>
-        </p>
       </div>
     </div>
   );

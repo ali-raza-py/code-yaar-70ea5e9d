@@ -11,6 +11,7 @@ import {
   ArrowRight,
   Sparkles,
   Award,
+  Users,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,6 +20,7 @@ import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { MyCertificates } from "@/components/certificates/MyCertificates";
+import { Leaderboard } from "@/components/dashboard/Leaderboard";
 
 interface UserStats {
   xp_points: number;
@@ -42,7 +44,7 @@ export default function Dashboard() {
   const [stats, setStats] = useState<UserStats | null>(null);
   const [badges, setBadges] = useState<Badge[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"overview" | "certificates">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "certificates" | "leaderboard">("overview");
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -161,13 +163,20 @@ export default function Dashboard() {
         </motion.div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-2 mb-8">
+        <div className="flex gap-2 mb-8 flex-wrap">
           <Button
             variant={activeTab === "overview" ? "default" : "outline"}
             onClick={() => setActiveTab("overview")}
           >
             <Zap className="w-4 h-4 mr-2" />
             Overview
+          </Button>
+          <Button
+            variant={activeTab === "leaderboard" ? "default" : "outline"}
+            onClick={() => setActiveTab("leaderboard")}
+          >
+            <Users className="w-4 h-4 mr-2" />
+            Leaderboard
           </Button>
           <Button
             variant={activeTab === "certificates" ? "default" : "outline"}
@@ -241,8 +250,8 @@ export default function Dashboard() {
               {/* Badges Earned */}
               <GlassCard className="p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="p-3 rounded-xl bg-yellow-500/10">
-                    <Trophy className="w-6 h-6 text-yellow-500" />
+                  <div className="p-3 rounded-xl bg-purple-500/10">
+                    <Trophy className="w-6 h-6 text-purple-500" />
                   </div>
                 </div>
                 <div className="mb-2">
@@ -261,7 +270,7 @@ export default function Dashboard() {
                 onClick={() => navigate("/ai-tool")}
               >
                 <div className="flex items-center gap-4">
-                  <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5">
+                  <div className="p-4 rounded-2xl bg-primary/10">
                     <Target className="w-8 h-8 text-primary" />
                   </div>
                   <div className="flex-1">
@@ -281,7 +290,7 @@ export default function Dashboard() {
                 onClick={() => navigate("/courses")}
               >
                 <div className="flex items-center gap-4">
-                  <div className="p-4 rounded-2xl bg-gradient-to-br from-green-500/20 to-green-500/5">
+                  <div className="p-4 rounded-2xl bg-green-500/10">
                     <BookOpen className="w-8 h-8 text-green-500" />
                   </div>
                   <div className="flex-1">
@@ -301,7 +310,7 @@ export default function Dashboard() {
                 onClick={() => navigate("/algorithms")}
               >
                 <div className="flex items-center gap-4">
-                  <div className="p-4 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-500/5">
+                  <div className="p-4 rounded-2xl bg-blue-500/10">
                     <Code2 className="w-8 h-8 text-blue-500" />
                   </div>
                   <div className="flex-1">
@@ -366,6 +375,22 @@ export default function Dashboard() {
               </motion.div>
             )}
           </>
+        ) : activeTab === "leaderboard" ? (
+          /* Leaderboard Tab */
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <GlassCard className="p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <Trophy className="w-6 h-6 text-primary" />
+                <h2 className="text-xl font-semibold text-foreground">
+                  XP Leaderboard
+                </h2>
+              </div>
+              <Leaderboard />
+            </GlassCard>
+          </motion.div>
         ) : (
           /* Certificates Tab */
           <motion.div

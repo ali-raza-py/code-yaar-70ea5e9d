@@ -24,7 +24,7 @@ import CourseViewer from "./pages/CourseViewer";
 import Algorithms from "./pages/Algorithms";
 import AlgorithmDetail from "./pages/AlgorithmDetail";
 import VerifyCertificate from "./pages/VerifyCertificate";
-
+import VerifyLanding from "./pages/VerifyLanding";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +57,7 @@ const App = () => (
                         <Route path="/courses/:slug/:lessonSlug" element={<CourseViewer />} />
                         <Route path="/algorithms" element={<Algorithms />} />
                         <Route path="/algorithms/:slug" element={<AlgorithmDetail />} />
+                        <Route path="/verify" element={<VerifyLanding />} />
                         <Route path="/verify/:certificateId" element={<VerifyCertificate />} />
                         
                         <Route
