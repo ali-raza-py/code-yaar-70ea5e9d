@@ -205,203 +205,204 @@ export default function Auth() {
   }
 
   return (
-    <div className="min-h-screen flex bg-background">
-      {/* Left Side - Value Statement */}
-      <div className="hidden lg:flex lg:w-1/2 bg-slate-900 text-white flex-col justify-center px-12 xl:px-20 relative overflow-hidden">
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] bg-[size:48px_48px]" />
-        </div>
+    <div className="min-h-screen flex">
+      {/* Left Side - Dark Blue Brand Panel */}
+      <div className="hidden lg:flex lg:w-[45%] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white flex-col justify-between p-12 xl:p-16 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
         
-        <div className="relative z-10">
-          <Link to="/" className="flex items-center gap-3 mb-12">
-            <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-              <Code2 className="w-6 h-6 text-slate-900" />
-            </div>
-            <span className="font-display font-bold text-2xl">Code-Yaar</span>
-          </Link>
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3 relative z-10">
+          <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+            <Code2 className="w-5 h-5 text-slate-900" />
+          </div>
+          <span className="font-display font-bold text-xl tracking-tight">Code-Yaar</span>
+        </Link>
+        
+        {/* Main Content */}
+        <div className="relative z-10 space-y-6">
+          <div>
+            <h1 className="text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight">
+              {isLogin ? "Welcome" : "Start your"}
+              <br />
+              <span className="text-primary">{isLogin ? "back." : "journey."}</span>
+            </h1>
+          </div>
           
-          <h1 className="text-4xl xl:text-5xl font-bold leading-tight mb-6">
-            Learn real programming.
-            <br />
-            <span className="text-primary">Not tutorials.</span>
-          </h1>
-          
-          <p className="text-lg text-slate-400 mb-8 max-w-md">
-            Master programming with structured courses, hands-on practice, and AI-powered learning paths. Built by students, for students.
+          <p className="text-lg text-slate-400 max-w-sm leading-relaxed">
+            {isLogin 
+              ? "Continue your learning journey with structured courses and hands-on practice."
+              : "Join thousands of students mastering programming the right way."}
           </p>
-          
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                <BookOpen className="w-4 h-4 text-primary" />
-              </div>
-              <span className="text-slate-300">Structured courses with real examples</span>
+
+          <div className="flex items-center gap-8 pt-4">
+            <div>
+              <div className="text-3xl font-bold text-primary">10K+</div>
+              <div className="text-sm text-slate-500">Active Learners</div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                <Code2 className="w-4 h-4 text-primary" />
-              </div>
-              <span className="text-slate-300">Algorithm library with code snippets</span>
+            <div className="w-px h-12 bg-slate-700" />
+            <div>
+              <div className="text-3xl font-bold text-primary">50+</div>
+              <div className="text-sm text-slate-500">Courses</div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                <Award className="w-4 h-4 text-primary" />
-              </div>
-              <span className="text-slate-300">Earn certificates upon completion</span>
+            <div className="w-px h-12 bg-slate-700" />
+            <div>
+              <div className="text-3xl font-bold text-primary">95%</div>
+              <div className="text-sm text-slate-500">Completion</div>
             </div>
+          </div>
+        </div>
+
+        {/* Bottom Features */}
+        <div className="relative z-10 space-y-3">
+          <div className="flex items-center gap-3 text-slate-400">
+            <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+              <BookOpen className="w-3 h-3 text-primary" />
+            </div>
+            <span className="text-sm">Structured learning paths</span>
+          </div>
+          <div className="flex items-center gap-3 text-slate-400">
+            <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+              <Code2 className="w-3 h-3 text-primary" />
+            </div>
+            <span className="text-sm">Real-world code examples</span>
+          </div>
+          <div className="flex items-center gap-3 text-slate-400">
+            <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+              <Award className="w-3 h-3 text-primary" />
+            </div>
+            <span className="text-sm">Verified certificates</span>
           </div>
         </div>
       </div>
 
       {/* Right Side - Auth Form */}
-      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex-1 flex items-center justify-center bg-slate-50 py-12 px-6 sm:px-12 lg:px-16">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
-          <Link to="/" className="flex lg:hidden items-center justify-center gap-2 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center">
-              <Code2 className="w-6 h-6 text-primary-foreground" />
+          <Link to="/" className="flex lg:hidden items-center justify-center gap-2 mb-10">
+            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+              <Code2 className="w-5 h-5 text-primary-foreground" />
             </div>
-            <span className="font-display font-bold text-2xl">Code-Yaar</span>
+            <span className="font-display font-bold text-xl">Code-Yaar</span>
           </Link>
 
           {isBlocked && (
-            <div className="mb-4 p-4 rounded-xl bg-destructive/10 border border-destructive/30 flex items-start gap-3">
+            <div className="mb-6 p-4 rounded-xl bg-destructive/10 border border-destructive/20 flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm font-medium text-destructive">Account Temporarily Locked</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Too many failed login attempts. Please wait {blockTimeRemaining} minutes before trying again.
+                  Too many failed attempts. Wait {blockTimeRemaining} minutes.
                 </p>
               </div>
             </div>
           )}
 
-          <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
-            <div className="text-center mb-8">
-              <h1 className="font-display text-2xl font-bold mb-2 text-foreground">
-                {isLogin ? "Welcome Back" : "Create Account"}
-              </h1>
-              <p className="text-sm text-muted-foreground">
+          {/* Auth Card */}
+          <div className="bg-white rounded-2xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100">
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-slate-900 mb-1">
+                {isLogin ? "Login to your account" : "Create an account"}
+              </h2>
+              <p className="text-slate-500 text-sm">
                 {isLogin
-                  ? "Sign in to continue your learning journey"
-                  : "Join Code-Yaar to start coding today"}
+                  ? "Enter your credentials to access your account"
+                  : "Fill in your details to get started"}
               </p>
             </div>
 
-            <Button
-              variant="outline"
-              className="w-full mb-2"
-              onClick={handleGoogleSignIn}
-              disabled={isLoading || isBlocked}
-            >
-              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-              </svg>
-              Continue with Google
-            </Button>
-            <p className="text-xs text-center text-muted-foreground mb-6">
-              Google login requires OAuth setup
-            </p>
-
-            <div className="relative mb-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">Or continue with email</span>
-              </div>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {!isLogin && (
                 <div>
-                  <label htmlFor="fullName" className="block text-sm font-medium mb-2 text-foreground">
+                  <label htmlFor="fullName" className="block text-sm font-medium mb-2 text-slate-700">
                     Full Name
                   </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                    <Input
-                      id="fullName"
-                      name="fullName"
-                      type="text"
-                      value={formData.fullName}
-                      onChange={handleChange}
-                      placeholder="John Doe"
-                      maxLength={100}
-                      className="pl-10"
-                    />
-                  </div>
+                  <Input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    placeholder="John Doe"
+                    maxLength={100}
+                    className="h-12 bg-slate-50 border-slate-200 focus:bg-white transition-colors"
+                  />
                 </div>
               )}
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2 text-foreground">
+                <label htmlFor="email" className="block text-sm font-medium mb-2 text-slate-700">
                   Email
                 </label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="you@example.com"
-                    required
-                    maxLength={255}
-                    className={`pl-10 ${errors.email ? "border-destructive" : ""}`}
-                  />
-                </div>
-                {errors.email && <p className="text-destructive text-xs mt-1">{errors.email}</p>}
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="you@example.com"
+                  required
+                  maxLength={255}
+                  className={`h-12 bg-slate-50 border-slate-200 focus:bg-white transition-colors ${errors.email ? "border-destructive" : ""}`}
+                />
+                {errors.email && <p className="text-destructive text-xs mt-1.5">{errors.email}</p>}
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium mb-2 text-foreground">
-                  Password
-                </label>
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="password" className="block text-sm font-medium text-slate-700">
+                    Password
+                  </label>
+                  {isLogin && (
+                    <button type="button" className="text-xs text-primary hover:underline font-medium">
+                      Forgot?
+                    </button>
+                  )}
+                </div>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                   <Input
                     id="password"
                     name="password"
                     type={showPassword ? "text" : "password"}
                     value={formData.password}
                     onChange={handleChange}
-                    placeholder="••••••••"
+                    placeholder="Enter your password"
                     required
                     maxLength={128}
-                    className={`pl-10 pr-10 ${errors.password ? "border-destructive" : ""}`}
+                    className={`h-12 bg-slate-50 border-slate-200 focus:bg-white transition-colors pr-10 ${errors.password ? "border-destructive" : ""}`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
-                {errors.password && <p className="text-destructive text-xs mt-1">{errors.password}</p>}
+                {errors.password && <p className="text-destructive text-xs mt-1.5">{errors.password}</p>}
                 
                 {/* Password Strength Indicator */}
                 {!isLogin && formData.password && passwordStrength && (
-                  <div className="mt-2 space-y-1">
+                  <div className="mt-3 space-y-1.5">
                     <div className="flex justify-between text-xs">
-                      <span className="text-muted-foreground">Strength:</span>
+                      <span className="text-slate-500">Password strength</span>
                       <span className={`font-medium ${
-                        passwordStrength.label === "Weak" ? "text-destructive" :
-                        passwordStrength.label === "Medium" ? "text-yellow-500" :
+                        passwordStrength.label === "Weak" ? "text-red-500" :
+                        passwordStrength.label === "Medium" ? "text-amber-500" :
                         passwordStrength.label === "Good" ? "text-blue-500" : "text-green-500"
                       }`}>
                         {passwordStrength.label}
                       </span>
                     </div>
-                    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
                       <div
-                        className={`h-full transition-all duration-300 ${passwordStrength.color}`}
+                        className={`h-full transition-all duration-300 rounded-full ${
+                          passwordStrength.label === "Weak" ? "bg-red-500" :
+                          passwordStrength.label === "Medium" ? "bg-amber-500" :
+                          passwordStrength.label === "Good" ? "bg-blue-500" : "bg-green-500"
+                        }`}
                         style={{ width: `${passwordStrength.percentage}%` }}
                       />
                     </div>
@@ -417,58 +418,81 @@ export default function Auth() {
 
               {!isLogin && (
                 <div>
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-foreground">
+                  <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-slate-700">
                     Confirm Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                     <Input
                       id="confirmPassword"
                       name="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      placeholder="••••••••"
+                      placeholder="Confirm your password"
                       required
                       maxLength={128}
-                      className={`pl-10 pr-10 ${errors.confirmPassword ? "border-destructive" : ""}`}
+                      className={`h-12 bg-slate-50 border-slate-200 focus:bg-white transition-colors pr-10 ${errors.confirmPassword ? "border-destructive" : ""}`}
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                     >
                       {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
                   {errors.confirmPassword && (
-                    <p className="text-destructive text-xs mt-1">{errors.confirmPassword}</p>
+                    <p className="text-destructive text-xs mt-1.5">{errors.confirmPassword}</p>
                   )}
                 </div>
               )}
 
               <Button
                 type="submit"
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                className="w-full h-12 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-base shadow-lg shadow-primary/25"
                 disabled={isLoading || isBlocked}
               >
                 {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  <>
-                    {isLogin ? "Sign In" : "Create Account"}
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </>
+                  isLogin ? "Login now" : "Create account"
                 )}
               </Button>
             </form>
 
-            <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground justify-center">
-              <ShieldCheck className="w-3 h-3" />
-              <span>Secured with encryption</span>
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-200" />
+              </div>
+              <div className="relative flex justify-center">
+                <span className="bg-white px-4 text-xs text-slate-400 uppercase tracking-wider">or</span>
+              </div>
             </div>
 
-            <p className="mt-6 text-center text-sm text-muted-foreground">
+            <Button
+              variant="outline"
+              className="w-full h-12 border-slate-200 hover:bg-slate-50 font-medium"
+              onClick={handleGoogleSignIn}
+              disabled={isLoading || isBlocked}
+            >
+              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+              </svg>
+              Continue with Google
+            </Button>
+
+            <div className="mt-6 flex items-center justify-center gap-2 text-xs text-slate-400">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Secured with encryption</span>
+            </div>
+          </div>
+
+          {/* Footer Links */}
+          <div className="mt-8 text-center space-y-4">
+            <p className="text-sm text-slate-600">
               {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
               <button
                 type="button"
@@ -477,21 +501,20 @@ export default function Auth() {
                   setErrors({});
                   setIsBlocked(false);
                 }}
-                className="text-primary font-medium hover:underline"
+                className="text-primary font-semibold hover:underline"
               >
                 {isLogin ? "Sign up" : "Sign in"}
               </button>
             </p>
-          </div>
-
-          <p className="mt-8 text-center">
+            
             <Link
               to="/"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-slate-600 transition-colors"
             >
-              ← Back to Home
+              <ArrowRight className="w-3 h-3 rotate-180" />
+              Back to Home
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </div>
