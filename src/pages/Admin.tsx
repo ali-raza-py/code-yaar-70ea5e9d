@@ -8,6 +8,7 @@ import { AIToolsAdmin } from "@/components/admin/AIToolsAdmin";
 import { UserProgressAdmin } from "@/components/admin/UserProgressAdmin";
 import { CoursesAdmin } from "@/components/admin/CoursesAdmin";
 import { CertificatesAdmin } from "@/components/admin/CertificatesAdmin";
+import { DSAAdmin } from "@/components/admin/DSAAdmin";
 import {
   Shield,
   Users,
@@ -21,11 +22,12 @@ import {
   Activity,
   BookOpen,
   Award,
+  Code,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
-type Tab = "users" | "resources" | "help" | "ai-tools" | "progress" | "courses" | "certificates";
+type Tab = "users" | "resources" | "help" | "ai-tools" | "progress" | "courses" | "certificates" | "dsa";
 
 interface Profile {
   id: string;
@@ -99,6 +101,7 @@ export default function Admin() {
 
   const tabs = [
     { id: "courses" as Tab, label: "Courses", icon: BookOpen },
+    { id: "dsa" as Tab, label: "DSA Library", icon: Code },
     { id: "certificates" as Tab, label: "Certificates", icon: Award },
     { id: "ai-tools" as Tab, label: "AI Tools", icon: Brain },
     { id: "resources" as Tab, label: "Resources", icon: FileText },
@@ -144,6 +147,8 @@ export default function Admin() {
 
         {/* Content */}
         {activeTab === "courses" && <CoursesAdmin />}
+
+        {activeTab === "dsa" && <DSAAdmin />}
 
         {activeTab === "certificates" && <CertificatesAdmin />}
 
