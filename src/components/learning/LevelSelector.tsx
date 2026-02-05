@@ -19,7 +19,7 @@ export function LevelSelector({ selectedLevel, onSelect, disabled }: LevelSelect
     <div className="space-y-4">
       <div className="text-center mb-8">
         <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-          Step 2 of 3
+          Step 3 of 4
         </span>
         <h2 className="font-display text-2xl md:text-3xl font-bold mb-2">Select Your Level</h2>
         <p className="text-muted-foreground">We'll customize your learning path based on your experience</p>
