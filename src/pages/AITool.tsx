@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { useAIAssistant } from "@/hooks/useAIAssistant";
@@ -6,6 +6,8 @@ import { useRoadmapGenerator } from "@/hooks/useRoadmapGenerator";
 import { useLearningAssistant } from "@/hooks/useLearningAssistant";
 import { LanguageSelector, type Language } from "@/components/learning/LanguageSelector";
 import { LevelSelector, type Level } from "@/components/learning/LevelSelector";
+import { RoadmapTypeSelector, type RoadmapType } from "@/components/learning/RoadmapTypeSelector";
+import { FlowchartRoadmap } from "@/components/learning/FlowchartRoadmap";
 import { RoadmapStep, type StepContent } from "@/components/learning/RoadmapStep";
 import { CodeCanvas } from "@/components/learning/CodeCanvas";
 import { LearningAssistant } from "@/components/learning/LearningAssistant";
@@ -14,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Lock, Loader2, ArrowRight, ArrowLeft, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
 
-type Step = "language" | "level" | "roadmap";
+type Step = "language" | "roadmapType" | "level" | "roadmap" | "flowchart";
 
 export default function AITool() {
   const { user } = useAuth();
@@ -22,6 +24,7 @@ export default function AITool() {
   
   const [currentWizardStep, setCurrentWizardStep] = useState<Step>("language");
   const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(null);
+  const [selectedRoadmapType, setSelectedRoadmapType] = useState<RoadmapType | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<Level | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
@@ -45,6 +48,10 @@ export default function AITool() {
     setSelectedLanguage(lang);
   };
 
+  const handleRoadmapTypeSelect = (type: RoadmapType) => {
+    setSelectedRoadmapType(type);
+  };
+
   const handleLevelSelect = (level: Level) => {
     setSelectedLevel(level);
   };
@@ -53,6 +60,14 @@ export default function AITool() {
     if (selectedLanguage && selectedLevel) {
       await generateRoadmap(selectedLanguage, selectedLevel);
       setCurrentWizardStep("roadmap");
+    }
+  };
+
+  const handleProceedFromRoadmapType = () => {
+    if (selectedRoadmapType === "flowchart" && selectedLanguage) {
+      setCurrentWizardStep("flowchart");
+    } else {
+      setCurrentWizardStep("level");
     }
   };
 
@@ -84,6 +99,7 @@ export default function AITool() {
   const handleReset = () => {
     setCurrentWizardStep("language");
     setSelectedLanguage(null);
+    setSelectedRoadmapType(null);
     setSelectedLevel(null);
     setCompletedSteps([]);
     setCurrentStepIndex(0);
@@ -122,7 +138,7 @@ export default function AITool() {
             <LanguageSelector selectedLanguage={selectedLanguage} onSelect={handleLanguageSelect} />
             {selectedLanguage && (
               <div className="flex justify-center mt-8">
-                <Button onClick={() => setCurrentWizardStep("level")} size="lg">
+                <Button onClick={() => setCurrentWizardStep("roadmapType")} size="lg">
                   Continue <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </div>
@@ -130,11 +146,34 @@ export default function AITool() {
           </div>
         )}
 
+        {currentWizardStep === "roadmapType" && (
+          <div className="max-w-4xl mx-auto">
+            <RoadmapTypeSelector selectedType={selectedRoadmapType} onSelect={handleRoadmapTypeSelect} />
+            <div className="flex justify-center gap-4 mt-8">
+              <Button variant="outline" onClick={() => setCurrentWizardStep("language")}>
+                <ArrowLeft className="w-4 h-4 mr-2" /> Back
+              </Button>
+              {selectedRoadmapType && (
+                <Button onClick={handleProceedFromRoadmapType} size="lg">
+                  Continue <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {currentWizardStep === "flowchart" && selectedLanguage && (
+          <FlowchartRoadmap 
+            language={selectedLanguage} 
+            onBack={() => setCurrentWizardStep("roadmapType")} 
+          />
+        )}
+
         {currentWizardStep === "level" && (
           <div className="max-w-4xl mx-auto">
             <LevelSelector selectedLevel={selectedLevel} onSelect={handleLevelSelect} />
             <div className="flex justify-center gap-4 mt-8">
-              <Button variant="outline" onClick={() => setCurrentWizardStep("language")}>
+              <Button variant="outline" onClick={() => setCurrentWizardStep("roadmapType")}>
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back
               </Button>
               <Button onClick={handleGenerateRoadmap} disabled={!selectedLevel || isGenerating} size="lg">
