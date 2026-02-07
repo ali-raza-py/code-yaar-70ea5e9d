@@ -60,6 +60,7 @@ const App = () => (
                         <Route path="/verify" element={<VerifyLanding />} />
                         <Route path="/verify/:certificateId" element={<VerifyCertificate />} />
                         
+                        {/* Admin route - navbar visible via Layout */}
                         <Route
                           path="/admin"
                           element={
