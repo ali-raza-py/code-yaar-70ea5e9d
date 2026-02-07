@@ -150,9 +150,9 @@ export function AdminLayout({ activeSection, onSectionChange, children }: AdminL
   };
 
   return (
-    <div className="flex bg-background min-h-[calc(100vh-4rem)]">
-      {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex w-64 border-r border-border bg-card/50 flex-col sticky top-0 h-[calc(100vh-4rem)]">
+    <div className="flex bg-background w-full">
+      {/* Desktop Sidebar - visible from md breakpoint (768px+) */}
+      <aside className="hidden md:flex w-64 border-r border-border bg-card/50 flex-col shrink-0 sticky top-16 h-[calc(100vh-4rem)] z-20">
         {/* Logo */}
         <div className="p-4 border-b border-border">
           <div className="flex items-center gap-2">
@@ -176,8 +176,8 @@ export function AdminLayout({ activeSection, onSectionChange, children }: AdminL
         </div>
       </aside>
 
-      {/* Mobile Header - Fixed below main navbar */}
-      <div className="lg:hidden fixed top-16 left-0 right-0 z-40 bg-card border-b border-border px-4 py-3">
+      {/* Mobile Header - Only visible on small screens */}
+      <div className="md:hidden fixed top-16 left-0 right-0 z-40 bg-card border-b border-border px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
@@ -195,24 +195,35 @@ export function AdminLayout({ activeSection, onSectionChange, children }: AdminL
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: -300 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -300 }}
-            className="lg:hidden fixed inset-0 z-30 bg-background pt-32"
-          >
-            <nav className="p-4 space-y-1 overflow-y-auto h-full">
-              {navItems.map(renderNavItem)}
-            </nav>
-          </motion.div>
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="md:hidden fixed inset-0 z-30 bg-black/50"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            {/* Menu */}
+            <motion.div
+              initial={{ opacity: 0, x: -300 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -300 }}
+              className="md:hidden fixed left-0 top-0 bottom-0 z-40 w-64 bg-card border-r border-border pt-32"
+            >
+              <nav className="p-4 space-y-1 overflow-y-auto h-full">
+                {navItems.map(renderNavItem)}
+              </nav>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="flex-1 pt-16 lg:pt-0 overflow-auto">
+      <main className="flex-1 pt-16 md:pt-0 overflow-auto min-w-0">
         <div className="p-6">{children}</div>
       </main>
     </div>
