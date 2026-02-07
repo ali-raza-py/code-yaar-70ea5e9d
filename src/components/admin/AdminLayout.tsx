@@ -150,9 +150,9 @@ export function AdminLayout({ activeSection, onSectionChange, children }: AdminL
   };
 
   return (
-    <div className="min-h-screen flex bg-background">
+    <div className="flex bg-background min-h-[calc(100vh-4rem)]">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex w-64 border-r border-border bg-card/50 flex-col">
+      <aside className="hidden lg:flex w-64 border-r border-border bg-card/50 flex-col sticky top-0 h-[calc(100vh-4rem)]">
         {/* Logo */}
         <div className="p-4 border-b border-border">
           <div className="flex items-center gap-2">
@@ -176,8 +176,8 @@ export function AdminLayout({ activeSection, onSectionChange, children }: AdminL
         </div>
       </aside>
 
-      {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card border-b border-border px-4 py-3">
+      {/* Mobile Header - Fixed below main navbar */}
+      <div className="lg:hidden fixed top-16 left-0 right-0 z-40 bg-card border-b border-border px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
@@ -202,7 +202,7 @@ export function AdminLayout({ activeSection, onSectionChange, children }: AdminL
             initial={{ opacity: 0, x: -300 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -300 }}
-            className="lg:hidden fixed inset-0 z-40 bg-background pt-16"
+            className="lg:hidden fixed inset-0 z-30 bg-background pt-32"
           >
             <nav className="p-4 space-y-1 overflow-y-auto h-full">
               {navItems.map(renderNavItem)}
@@ -212,7 +212,7 @@ export function AdminLayout({ activeSection, onSectionChange, children }: AdminL
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="flex-1 lg:pl-0 pt-16 lg:pt-0 overflow-auto">
+      <main className="flex-1 pt-16 lg:pt-0 overflow-auto">
         <div className="p-6">{children}</div>
       </main>
     </div>

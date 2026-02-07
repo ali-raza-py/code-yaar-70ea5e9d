@@ -12,6 +12,10 @@ import {
   FileText,
   Layers,
   Zap,
+  Globe,
+  EyeOff,
+  CheckCircle,
+  AlertCircle,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -20,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -198,6 +203,41 @@ export function CoursesAdminNew() {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  // Toggle course publish status with feedback
+  const handleTogglePublish = async (course: Course) => {
+    const newStatus = !course.is_published;
+    
+    try {
+      const { error } = await supabase
+        .from("courses")
+        .update({ is_published: newStatus })
+        .eq("id", course.id);
+
+      if (error) throw error;
+
+      // Update local state immediately for responsive UI
+      setCourses((prev) =>
+        prev.map((c) =>
+          c.id === course.id ? { ...c, is_published: newStatus } : c
+        )
+      );
+
+      toast({
+        title: newStatus ? "Course Published!" : "Course Unpublished",
+        description: newStatus
+          ? `"${course.title}" is now visible to students and listed publicly.`
+          : `"${course.title}" is now hidden from students.`,
+        variant: "default",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Publishing Failed",
+        description: error.message || "Failed to update course status. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -404,7 +444,7 @@ export function CoursesAdminNew() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground">{course.title}</h3>
-                  <div className="flex items-center gap-2 mt-1">
+                  <div className="flex items-center gap-2 mt-1 flex-wrap">
                     <Badge variant="outline" className={DIFFICULTIES.find((d) => d.value === course.difficulty)?.color}>
                       {course.difficulty}
                     </Badge>
@@ -416,8 +456,16 @@ export function CoursesAdminNew() {
                       <Zap className="w-3 h-3 mr-1" />
                       {course.xp_reward || 0} XP
                     </Badge>
-                    {!course.is_published && (
-                      <Badge variant="outline" className="text-muted-foreground">Draft</Badge>
+                    {course.is_published ? (
+                      <Badge className="bg-emerald-500/20 text-emerald-600 border-emerald-500/30">
+                        <Globe className="w-3 h-3 mr-1" />
+                        Published
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className="text-amber-600 border-amber-500/30 bg-amber-500/10">
+                        <EyeOff className="w-3 h-3 mr-1" />
+                        Draft
+                      </Badge>
                     )}
                   </div>
                 </div>
@@ -433,6 +481,20 @@ export function CoursesAdminNew() {
                 >
                   <Pencil className="w-4 h-4" />
                 </Button>
+                {/* Publish Toggle */}
+                <div 
+                  className="flex items-center gap-2 px-3 py-1 rounded-lg bg-secondary/50"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <span className="text-xs text-muted-foreground">
+                    {course.is_published ? "Published" : "Draft"}
+                  </span>
+                  <Switch
+                    checked={course.is_published ?? false}
+                    onCheckedChange={() => handleTogglePublish(course)}
+                    className="data-[state=checked]:bg-emerald-500"
+                  />
+                </div>
                 <Button
                   variant="ghost"
                   size="icon"
