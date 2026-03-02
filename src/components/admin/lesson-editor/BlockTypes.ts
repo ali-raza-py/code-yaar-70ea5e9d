@@ -1,4 +1,4 @@
-export type BlockType = "text" | "code" | "output" | "explanation" | "practice";
+export type BlockType = "text" | "code" | "output" | "explanation" | "practice" | "image";
 
 export interface TextBlock {
   type: "text";
@@ -39,33 +39,53 @@ export interface PracticeBlock {
   hints?: string[];
 }
 
-export type LessonBlock = TextBlock | CodeBlock | OutputBlock | ExplanationBlock | PracticeBlock;
+export interface ImageBlock {
+  type: "image";
+  id: string;
+  url: string;
+  alt: string;
+  caption?: string;
+  width?: "full" | "large" | "medium" | "small";
+}
 
-export const BLOCK_LABELS: Record<BlockType, { label: string; description: string; color: string }> = {
+export type LessonBlock = TextBlock | CodeBlock | OutputBlock | ExplanationBlock | PracticeBlock | ImageBlock;
+
+export const BLOCK_LABELS: Record<BlockType, { label: string; description: string; color: string; icon: string }> = {
   text: {
-    label: "Text Block",
+    label: "Text",
     description: "Headings, paragraphs, lists",
     color: "from-blue-500 to-blue-600",
+    icon: "FileText",
   },
   code: {
-    label: "Code Block",
+    label: "Code",
     description: "Syntax highlighted code",
     color: "from-emerald-500 to-emerald-600",
+    icon: "Code",
   },
   output: {
-    label: "Output Block",
+    label: "Output",
     description: "Expected code output",
     color: "from-amber-500 to-amber-600",
+    icon: "Terminal",
   },
   explanation: {
     label: "Explanation",
     description: "Plain explanation text",
     color: "from-violet-500 to-violet-600",
+    icon: "MessageSquare",
   },
   practice: {
-    label: "Practice Block",
+    label: "Practice",
     description: "XP-earning challenge",
     color: "from-rose-500 to-rose-600",
+    icon: "Zap",
+  },
+  image: {
+    label: "Image",
+    description: "Inline image or diagram",
+    color: "from-cyan-500 to-cyan-600",
+    icon: "ImageIcon",
   },
 };
 
