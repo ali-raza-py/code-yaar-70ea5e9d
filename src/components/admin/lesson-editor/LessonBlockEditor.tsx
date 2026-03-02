@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Reorder } from "framer-motion";
 import {
   Plus,
   FileText,
@@ -9,25 +9,24 @@ import {
   Zap,
   Save,
   Eye,
+  PenLine,
   Loader2,
+  ImageIcon,
+  Grip,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { GlassCard } from "@/components/ui/GlassCard";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/resizable";
 import { BlockRenderer } from "./BlockRenderer";
+import { LivePreview } from "./LivePreview";
 import {
   LessonBlock,
   BlockType,
   BLOCK_LABELS,
-  TextBlock,
   CodeBlock,
-  OutputBlock,
-  ExplanationBlock,
   PracticeBlock,
 } from "./BlockTypes";
 import { cn } from "@/lib/utils";
@@ -39,13 +38,22 @@ interface LessonBlockEditorProps {
   isSaving?: boolean;
 }
 
+const BLOCK_BUTTONS: { type: BlockType; icon: typeof FileText; shortLabel: string }[] = [
+  { type: "text", icon: FileText, shortLabel: "Text" },
+  { type: "code", icon: Code, shortLabel: "Code" },
+  { type: "output", icon: Terminal, shortLabel: "Output" },
+  { type: "explanation", icon: MessageSquare, shortLabel: "Explain" },
+  { type: "practice", icon: Zap, shortLabel: "Practice" },
+  { type: "image", icon: ImageIcon, shortLabel: "Image" },
+];
+
 export function LessonBlockEditor({
   blocks,
   onChange,
   onSave,
   isSaving = false,
 }: LessonBlockEditorProps) {
-  const [previewMode, setPreviewMode] = useState(false);
+  const [activeView, setActiveView] = useState<"split" | "edit" | "preview">("split");
 
   const generateId = () => `block_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
@@ -62,12 +70,13 @@ export function LessonBlockEditor({
         return { type: "explanation", id, content: "" };
       case "practice":
         return { type: "practice", id, question: "", xpValue: 25 };
+      case "image":
+        return { type: "image", id, url: "", alt: "", width: "large" };
     }
   };
 
   const addBlock = (type: BlockType) => {
-    const newBlock = createBlock(type);
-    onChange([...blocks, newBlock]);
+    onChange([...blocks, createBlock(type)]);
   };
 
   const updateBlock = (index: number, updatedBlock: LessonBlock) => {
@@ -90,74 +99,30 @@ export function LessonBlockEditor({
 
   const getCodeBlocks = () => blocks.filter((b): b is CodeBlock => b.type === "code");
 
-  const calculateTotalXp = () => {
-    return blocks
-      .filter((b): b is PracticeBlock => b.type === "practice")
-      .reduce((sum, b) => sum + b.xpValue, 0);
-  };
+  const totalXp = blocks
+    .filter((b): b is PracticeBlock => b.type === "practice")
+    .reduce((sum, b) => sum + b.xpValue, 0);
 
-  const blockButtons = [
-    { type: "text" as BlockType, icon: FileText, color: "text-blue-500" },
-    { type: "code" as BlockType, icon: Code, color: "text-emerald-500" },
-    { type: "output" as BlockType, icon: Terminal, color: "text-amber-500" },
-    { type: "explanation" as BlockType, icon: MessageSquare, color: "text-violet-500" },
-    { type: "practice" as BlockType, icon: Zap, color: "text-rose-500" },
-  ];
-
-  return (
-    <div className="space-y-6">
-      {/* Toolbar */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-muted-foreground">
-            {blocks.length} blocks
-          </span>
-          <span className="text-sm text-muted-foreground">•</span>
-          <span className="text-sm font-medium text-primary">
-            {calculateTotalXp()} XP total
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
+  const editorContent = (
+    <div className="space-y-3 p-4 overflow-y-auto h-full">
+      {/* Add block toolbar */}
+      <div className="flex items-center gap-1.5 flex-wrap pb-2 border-b border-border/40">
+        {BLOCK_BUTTONS.map(({ type, icon: Icon, shortLabel }) => (
           <Button
+            key={type}
             variant="outline"
             size="sm"
-            onClick={() => setPreviewMode(!previewMode)}
+            onClick={() => addBlock(type)}
+            className="h-7 text-xs gap-1.5 px-2.5"
           >
-            <Eye className="w-4 h-4 mr-2" />
-            {previewMode ? "Edit" : "Preview"}
+            <Icon className="w-3 h-3" />
+            {shortLabel}
           </Button>
-          <Button size="sm" onClick={onSave} disabled={isSaving}>
-            {isSaving ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            ) : (
-              <Save className="w-4 h-4 mr-2" />
-            )}
-            Save Lesson
-          </Button>
-        </div>
+        ))}
       </div>
 
-      {/* Add Block Toolbar */}
-      <GlassCard className="p-4">
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="text-sm font-medium text-muted-foreground">Add block:</span>
-          {blockButtons.map(({ type, icon: Icon, color }) => (
-            <Button
-              key={type}
-              variant="outline"
-              size="sm"
-              onClick={() => addBlock(type)}
-              className="gap-2"
-            >
-              <Icon className={cn("w-4 h-4", color)} />
-              {BLOCK_LABELS[type].label}
-            </Button>
-          ))}
-        </div>
-      </GlassCard>
-
-      {/* Blocks List */}
-      <div className="space-y-4">
+      {/* Blocks */}
+      <div className="space-y-2.5">
         <AnimatePresence mode="popLayout">
           {blocks.map((block, index) => (
             <BlockRenderer
@@ -175,47 +140,107 @@ export function LessonBlockEditor({
         </AnimatePresence>
 
         {blocks.length === 0 && (
-          <div className="text-center py-16 border-2 border-dashed border-border rounded-xl">
-            <div className="text-muted-foreground mb-4">
-              <FileText className="w-12 h-12 mx-auto mb-2 opacity-50" />
-              <p className="text-lg font-medium">No blocks yet</p>
-              <p className="text-sm">Add your first block to start building the lesson</p>
-            </div>
-            <div className="flex justify-center gap-2 flex-wrap">
-              {blockButtons.slice(0, 3).map(({ type, icon: Icon, color }) => (
-                <Button
-                  key={type}
-                  variant="outline"
-                  size="sm"
-                  onClick={() => addBlock(type)}
-                  className="gap-2"
-                >
-                  <Icon className={cn("w-4 h-4", color)} />
-                  {BLOCK_LABELS[type].label}
+          <div className="text-center py-12 border border-dashed border-border/60 rounded-lg">
+            <Grip className="w-8 h-8 mx-auto mb-2 text-muted-foreground/30" />
+            <p className="text-sm font-medium text-muted-foreground">No blocks yet</p>
+            <p className="text-xs text-muted-foreground/70 mt-1 mb-3">Click a block type above to begin</p>
+            <div className="flex justify-center gap-1.5">
+              {BLOCK_BUTTONS.slice(0, 3).map(({ type, icon: Icon, shortLabel }) => (
+                <Button key={type} variant="outline" size="sm" onClick={() => addBlock(type)} className="h-7 text-xs gap-1.5 px-2.5">
+                  <Icon className="w-3 h-3" />
+                  {shortLabel}
                 </Button>
               ))}
             </div>
           </div>
         )}
       </div>
+    </div>
+  );
 
-      {/* Block Types Legend */}
-      <GlassCard className="p-4">
-        <h4 className="text-sm font-medium mb-3">Block Types Guide</h4>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-          {Object.entries(BLOCK_LABELS).map(([type, { label, description, color }]) => (
-            <div
-              key={type}
-              className="p-3 rounded-lg bg-secondary/30 border border-border/50"
-            >
-              <div className={cn("text-xs font-medium mb-1", `bg-gradient-to-r ${color} bg-clip-text text-transparent`)}>
-                {label}
-              </div>
-              <div className="text-xs text-muted-foreground">{description}</div>
-            </div>
-          ))}
+  const previewContent = (
+    <div className="p-6 overflow-y-auto h-full bg-background">
+      <LivePreview blocks={blocks} />
+    </div>
+  );
+
+  return (
+    <div className="flex flex-col h-[65vh] border border-border rounded-xl overflow-hidden bg-card">
+      {/* Top bar */}
+      <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-secondary/20">
+        <div className="flex items-center gap-3">
+          <span className="text-xs font-medium text-muted-foreground">
+            {blocks.length} block{blocks.length !== 1 ? "s" : ""}
+          </span>
+          {totalXp > 0 && (
+            <>
+              <span className="text-muted-foreground/30">·</span>
+              <span className="text-xs font-semibold text-primary">{totalXp} XP</span>
+            </>
+          )}
         </div>
-      </GlassCard>
+        <div className="flex items-center gap-1.5">
+          {/* View toggles */}
+          <div className="flex items-center rounded-md border border-border bg-secondary/30 p-0.5">
+            <button
+              onClick={() => setActiveView("edit")}
+              className={cn(
+                "px-2.5 py-1 rounded text-xs font-medium transition-colors",
+                activeView === "edit" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <PenLine className="w-3 h-3 inline mr-1" />
+              Edit
+            </button>
+            <button
+              onClick={() => setActiveView("split")}
+              className={cn(
+                "px-2.5 py-1 rounded text-xs font-medium transition-colors",
+                activeView === "split" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              Split
+            </button>
+            <button
+              onClick={() => setActiveView("preview")}
+              className={cn(
+                "px-2.5 py-1 rounded text-xs font-medium transition-colors",
+                activeView === "preview" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              <Eye className="w-3 h-3 inline mr-1" />
+              Preview
+            </button>
+          </div>
+
+          <Button size="sm" onClick={onSave} disabled={isSaving} className="h-7 text-xs ml-2">
+            {isSaving ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <Save className="w-3 h-3 mr-1" />}
+            Save
+          </Button>
+        </div>
+      </div>
+
+      {/* Main content area */}
+      <div className="flex-1 min-h-0">
+        {activeView === "edit" && editorContent}
+        {activeView === "preview" && previewContent}
+        {activeView === "split" && (
+          <ResizablePanelGroup direction="horizontal">
+            <ResizablePanel defaultSize={55} minSize={35}>
+              {editorContent}
+            </ResizablePanel>
+            <ResizableHandle withHandle />
+            <ResizablePanel defaultSize={45} minSize={25}>
+              <div className="h-full border-l border-border/30">
+                <div className="px-4 py-1.5 border-b border-border/30 bg-secondary/10">
+                  <span className="text-[10px] uppercase tracking-widest font-semibold text-muted-foreground">Preview</span>
+                </div>
+                {previewContent}
+              </div>
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        )}
+      </div>
     </div>
   );
 }
