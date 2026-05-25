@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, BookOpen, Clock, Star, ChevronRight, Award, CheckCircle, ShieldCheck, ExternalLink } from "lucide-react";
+import { Search, BookOpen, Clock, Star, ChevronRight, Award, CheckCircle, ShieldCheck, ExternalLink, Sparkles, Flame, Trophy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Input } from "@/components/ui/input";
@@ -22,27 +22,33 @@ interface Course {
   is_featured: boolean;
 }
 
-// Language/Course icons with colorful styling like Programiz
+// Vibrant Duolingo-style language cards
 const LANGUAGE_COURSES = [
-  { id: "python", name: "Python", icon: "🐍", color: "from-blue-500 to-blue-600", bgColor: "bg-blue-50", textColor: "text-blue-600" },
-  { id: "sql", name: "SQL", icon: "🗃️", color: "from-orange-500 to-orange-600", bgColor: "bg-orange-50", textColor: "text-orange-600" },
-  { id: "r", name: "R", icon: "📊", color: "from-blue-400 to-blue-500", bgColor: "bg-blue-50", textColor: "text-blue-500" },
-  { id: "html", name: "HTML", icon: "🌐", color: "from-orange-500 to-red-500", bgColor: "bg-orange-50", textColor: "text-orange-600" },
-  { id: "css", name: "CSS", icon: "🎨", color: "from-blue-500 to-purple-500", bgColor: "bg-blue-50", textColor: "text-blue-600" },
-  { id: "javascript", name: "JavaScript", icon: "⚡", color: "from-yellow-400 to-yellow-500", bgColor: "bg-yellow-50", textColor: "text-yellow-600" },
-  { id: "typescript", name: "TypeScript", icon: "📘", color: "from-blue-600 to-blue-700", bgColor: "bg-blue-50", textColor: "text-blue-700" },
-  { id: "java", name: "Java", icon: "☕", color: "from-red-500 to-red-600", bgColor: "bg-red-50", textColor: "text-red-600" },
-  { id: "c", name: "C", icon: "⚙️", color: "from-gray-600 to-gray-700", bgColor: "bg-gray-50", textColor: "text-gray-700" },
-  { id: "cpp", name: "C++", icon: "🔧", color: "from-blue-600 to-purple-600", bgColor: "bg-purple-50", textColor: "text-purple-600" },
-  { id: "csharp", name: "C#", icon: "💜", color: "from-purple-500 to-purple-600", bgColor: "bg-purple-50", textColor: "text-purple-600" },
-  { id: "go", name: "Go", icon: "🐹", color: "from-cyan-500 to-cyan-600", bgColor: "bg-cyan-50", textColor: "text-cyan-600" },
-  { id: "kotlin", name: "Kotlin", icon: "🎯", color: "from-purple-500 to-orange-500", bgColor: "bg-purple-50", textColor: "text-purple-600" },
-  { id: "swift", name: "Swift", icon: "🍎", color: "from-orange-500 to-red-500", bgColor: "bg-orange-50", textColor: "text-orange-600" },
-  { id: "dsa", name: "DSA", icon: "🧮", color: "from-emerald-500 to-teal-500", bgColor: "bg-emerald-50", textColor: "text-emerald-600" },
-  { id: "numpy", name: "NumPy", icon: "🔢", color: "from-blue-500 to-cyan-500", bgColor: "bg-cyan-50", textColor: "text-cyan-600" },
-  { id: "pandas", name: "Pandas", icon: "🐼", color: "from-blue-600 to-blue-700", bgColor: "bg-blue-50", textColor: "text-blue-700" },
-  { id: "rust", name: "Rust", icon: "🦀", color: "from-orange-600 to-red-600", bgColor: "bg-orange-50", textColor: "text-orange-700" },
+  { id: "python",     name: "Python",     icon: "🐍", tagline: "Easy to read, fun to write",       gradient: "from-sky-400 via-blue-500 to-indigo-600",     ring: "ring-blue-300",     level: "Beginner" },
+  { id: "javascript", name: "JavaScript", icon: "⚡", tagline: "Power the entire web",              gradient: "from-amber-300 via-yellow-400 to-orange-500", ring: "ring-yellow-300",   level: "Beginner" },
+  { id: "html",       name: "HTML",       icon: "🌐", tagline: "Build your first webpage",          gradient: "from-orange-400 via-red-400 to-rose-500",     ring: "ring-orange-300",   level: "Beginner" },
+  { id: "css",        name: "CSS",        icon: "🎨", tagline: "Style with creativity",             gradient: "from-cyan-400 via-blue-500 to-purple-500",    ring: "ring-cyan-300",     level: "Beginner" },
+  { id: "typescript", name: "TypeScript", icon: "📘", tagline: "JavaScript with superpowers",       gradient: "from-blue-500 via-indigo-500 to-blue-700",    ring: "ring-blue-300",     level: "Intermediate" },
+  { id: "java",       name: "Java",       icon: "☕", tagline: "Write once, run everywhere",        gradient: "from-rose-500 via-red-500 to-orange-600",     ring: "ring-rose-300",     level: "Intermediate" },
+  { id: "cpp",        name: "C++",        icon: "🔧", tagline: "Speed meets control",               gradient: "from-indigo-500 via-purple-500 to-fuchsia-600", ring: "ring-purple-300",  level: "Advanced" },
+  { id: "c",          name: "C",          icon: "⚙️", tagline: "The mother of languages",           gradient: "from-slate-500 via-slate-600 to-slate-800",   ring: "ring-slate-300",    level: "Intermediate" },
+  { id: "csharp",     name: "C#",         icon: "💜", tagline: "Build apps & games",                gradient: "from-fuchsia-500 via-purple-500 to-violet-700", ring: "ring-fuchsia-300", level: "Intermediate" },
+  { id: "sql",        name: "SQL",        icon: "🗃️", tagline: "Talk to your data",                 gradient: "from-orange-400 via-amber-500 to-yellow-600", ring: "ring-orange-300",   level: "Beginner" },
+  { id: "r",          name: "R",          icon: "📊", tagline: "Statistics made simple",            gradient: "from-sky-400 via-cyan-500 to-teal-500",       ring: "ring-cyan-300",     level: "Intermediate" },
+  { id: "go",         name: "Go",         icon: "🐹", tagline: "Simple, fast, modern",              gradient: "from-cyan-400 via-teal-500 to-emerald-600",   ring: "ring-cyan-300",     level: "Intermediate" },
+  { id: "kotlin",     name: "Kotlin",     icon: "🎯", tagline: "Modern Android dev",                gradient: "from-purple-500 via-pink-500 to-orange-500",  ring: "ring-pink-300",     level: "Intermediate" },
+  { id: "swift",      name: "Swift",      icon: "🍎", tagline: "Build iOS apps",                    gradient: "from-orange-400 via-red-500 to-pink-500",     ring: "ring-orange-300",   level: "Intermediate" },
+  { id: "rust",       name: "Rust",       icon: "🦀", tagline: "Memory-safe systems",               gradient: "from-orange-500 via-rose-500 to-red-700",     ring: "ring-orange-300",   level: "Advanced" },
+  { id: "dsa",        name: "DSA",        icon: "🧮", tagline: "Crack coding interviews",           gradient: "from-emerald-400 via-teal-500 to-cyan-600",   ring: "ring-emerald-300",  level: "Advanced" },
+  { id: "numpy",      name: "NumPy",      icon: "🔢", tagline: "Numerical computing",               gradient: "from-blue-400 via-sky-500 to-cyan-500",       ring: "ring-sky-300",      level: "Intermediate" },
+  { id: "pandas",     name: "Pandas",     icon: "🐼", tagline: "Data analysis toolkit",             gradient: "from-indigo-500 via-blue-600 to-slate-800",   ring: "ring-indigo-300",   level: "Intermediate" },
 ];
+
+const LEVEL_STYLES: Record<string, string> = {
+  Beginner: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  Intermediate: "bg-amber-100 text-amber-700 border-amber-200",
+  Advanced: "bg-rose-100 text-rose-700 border-rose-200",
+};
 
 export default function Courses() {
   const navigate = useNavigate();
