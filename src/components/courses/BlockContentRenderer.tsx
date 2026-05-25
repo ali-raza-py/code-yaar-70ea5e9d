@@ -60,9 +60,9 @@ function BlockComponent({ block, onPracticeComplete, isCompleted }: { block: Les
 
 function TextBlockRenderer({ block }: { block: TextBlock }) {
   const headingClasses = {
-    h1: "text-3xl font-bold text-foreground mt-8 mb-4",
-    h2: "text-2xl font-semibold text-foreground mt-6 mb-3",
-    h3: "text-xl font-medium text-foreground mt-4 mb-2",
+    h1: "text-3xl md:text-4xl font-extrabold tracking-tight text-foreground mt-10 mb-5 pb-3 border-b border-border/60",
+    h2: "text-2xl md:text-[1.7rem] font-bold tracking-tight text-foreground mt-9 mb-4 pl-4 border-l-4 border-primary",
+    h3: "text-xl font-semibold text-foreground mt-7 mb-3",
     paragraph: "",
   };
   if (block.heading === "paragraph" || !block.heading) return <MarkdownRenderer content={block.content} />;
