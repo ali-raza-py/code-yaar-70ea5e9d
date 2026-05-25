@@ -240,7 +240,10 @@ export default function CourseViewer() {
                 onNext={handleNext}
                 onPrevious={handlePrevious}
                 isLoading={isSaving}
+                totalLessons={lessons.length}
+                completedCount={completedCount}
               />
+
             )}
           </div>
         </main>
