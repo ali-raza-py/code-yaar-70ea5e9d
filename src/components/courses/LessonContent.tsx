@@ -98,9 +98,9 @@ export function LessonContent({
       </motion.div>
 
       {/* Lesson Content - Block-based renderer with Markdown support */}
-      <div className="prose-lesson">
+      <article className="relative rounded-2xl bg-card border border-border/60 shadow-sm px-6 md:px-10 py-8 md:py-10">
         <BlockContentRenderer content={content} />
-      </div>
+      </article>
 
       {/* Completion & Navigation */}
       <GlassCard className="p-6 mt-12">

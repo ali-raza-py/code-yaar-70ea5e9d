@@ -23,20 +23,22 @@ export function MarkdownRenderer({ content, className = "" }: MarkdownRendererPr
 
   return (
     <div
-      className={`prose prose-invert max-w-none 
-        prose-headings:text-foreground 
-        prose-h1:text-3xl prose-h1:font-bold prose-h1:mt-8 prose-h1:mb-4
-        prose-h2:text-2xl prose-h2:font-semibold prose-h2:mt-6 prose-h2:mb-3
-        prose-h3:text-xl prose-h3:font-medium prose-h3:mt-4 prose-h3:mb-2
-        prose-p:text-muted-foreground prose-p:my-3 prose-p:leading-relaxed
-        prose-strong:text-foreground prose-strong:font-semibold
-        prose-em:italic
-        prose-code:text-primary prose-code:bg-primary/10 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-code:font-mono prose-code:text-sm
-        prose-a:text-primary prose-a:underline prose-a:underline-offset-2 hover:prose-a:text-primary/80
-        prose-li:text-muted-foreground prose-li:my-1
-        prose-ul:my-4 prose-ul:list-disc prose-ul:pl-6
-        prose-ol:my-4 prose-ol:list-decimal prose-ol:pl-6
-        prose-hr:border-border prose-hr:my-8
+      className={`lesson-prose max-w-none text-[15.5px] md:text-base leading-[1.75] text-foreground/90
+        [&_h1]:relative [&_h1]:text-3xl md:[&_h1]:text-4xl [&_h1]:font-extrabold [&_h1]:tracking-tight [&_h1]:text-foreground [&_h1]:mt-10 [&_h1]:mb-5 [&_h1]:pb-3 [&_h1]:border-b [&_h1]:border-border/60
+        [&_h2]:relative [&_h2]:text-2xl md:[&_h2]:text-[1.7rem] [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-foreground [&_h2]:mt-9 [&_h2]:mb-4 [&_h2]:pl-4 [&_h2]:border-l-4 [&_h2]:border-primary
+        [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-7 [&_h3]:mb-3
+        [&_h4]:text-lg [&_h4]:font-semibold [&_h4]:text-foreground [&_h4]:mt-6 [&_h4]:mb-2
+        [&_p]:my-4 [&_p]:leading-[1.8] [&_p]:text-foreground/80
+        [&_strong]:text-foreground [&_strong]:font-semibold
+        [&_em]:italic [&_em]:text-foreground/90
+        [&_a]:text-primary [&_a]:font-medium [&_a]:underline [&_a]:decoration-primary/40 [&_a]:underline-offset-[3px] hover:[&_a]:decoration-primary [&_a]:transition-colors
+        [&_code]:text-primary [&_code]:bg-primary/10 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded-md [&_code]:font-mono [&_code]:text-[0.9em] [&_code]:font-medium [&_code]:border [&_code]:border-primary/20
+        [&_ul]:my-5 [&_ul]:pl-6 [&_ul]:space-y-2 [&_ul>li]:relative [&_ul>li]:pl-2 [&_ul>li]:marker:text-primary
+        [&_ol]:my-5 [&_ol]:pl-6 [&_ol]:space-y-2 [&_ol>li]:pl-2 [&_ol>li]:marker:text-primary [&_ol>li]:marker:font-semibold
+        [&_li]:text-foreground/80 [&_li]:leading-relaxed
+        [&_ul]:list-disc [&_ol]:list-decimal
+        [&_hr]:my-10 [&_hr]:border-0 [&_hr]:h-px [&_hr]:bg-gradient-to-r [&_hr]:from-transparent [&_hr]:via-border [&_hr]:to-transparent
+        [&_blockquote]:my-5 [&_blockquote]:pl-5 [&_blockquote]:py-2 [&_blockquote]:border-l-4 [&_blockquote]:border-primary/60 [&_blockquote]:bg-primary/5 [&_blockquote]:rounded-r-lg [&_blockquote]:italic [&_blockquote]:text-foreground/85
         ${className}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
@@ -81,6 +83,10 @@ export function parseMarkdown(text: string): string {
   html = html.replace(/^\*\*\*$/gm, '<hr />');
   html = html.replace(/^___$/gm, '<hr />');
 
+  // Blockquotes (> text)
+  html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+  html = html.replace(/(<blockquote>.*?<\/blockquote>\n?)+/g, (match) => match.replace(/<\/blockquote>\n?<blockquote>/g, '<br />'));
+
   // Unordered lists (- or * items)
   html = html.replace(/^[\-\*] (.+)$/gm, '<li>$1</li>');
   // Wrap consecutive <li> items in <ul>
@@ -118,7 +124,7 @@ export function parseMarkdown(text: string): string {
 
   // Sanitize HTML
   return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'em', 'code', 'a', 'ul', 'ol', 'li', 'hr', 'br'],
+    ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'em', 'code', 'a', 'ul', 'ol', 'li', 'hr', 'br', 'blockquote'],
     ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
   });
 }
