@@ -40,11 +40,12 @@ export default function CourseViewer() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const { 
-    completedCount, 
-    isLessonCompleted, 
-    markLessonComplete 
+  const {
+    completedCount,
+    isLessonCompleted,
+    markLessonComplete,
   } = useCourseProgress(course?.id);
+
 
   // Fetch course and lessons
   useEffect(() => {
@@ -239,7 +240,10 @@ export default function CourseViewer() {
                 onNext={handleNext}
                 onPrevious={handlePrevious}
                 isLoading={isSaving}
+                totalLessons={lessons.length}
+                completedCount={completedCount}
               />
+
             )}
           </div>
         </main>

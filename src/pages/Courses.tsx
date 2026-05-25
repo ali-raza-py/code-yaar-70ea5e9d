@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, BookOpen, Clock, Star, ChevronRight, Award, CheckCircle, ShieldCheck, ExternalLink } from "lucide-react";
+import { Search, BookOpen, Clock, Star, ChevronRight, Award, CheckCircle, ShieldCheck, ExternalLink, Sparkles, Flame, Trophy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Input } from "@/components/ui/input";
@@ -22,27 +22,33 @@ interface Course {
   is_featured: boolean;
 }
 
-// Language/Course icons with colorful styling like Programiz
+// Vibrant Duolingo-style language cards
 const LANGUAGE_COURSES = [
-  { id: "python", name: "Python", icon: "🐍", color: "from-blue-500 to-blue-600", bgColor: "bg-blue-50", textColor: "text-blue-600" },
-  { id: "sql", name: "SQL", icon: "🗃️", color: "from-orange-500 to-orange-600", bgColor: "bg-orange-50", textColor: "text-orange-600" },
-  { id: "r", name: "R", icon: "📊", color: "from-blue-400 to-blue-500", bgColor: "bg-blue-50", textColor: "text-blue-500" },
-  { id: "html", name: "HTML", icon: "🌐", color: "from-orange-500 to-red-500", bgColor: "bg-orange-50", textColor: "text-orange-600" },
-  { id: "css", name: "CSS", icon: "🎨", color: "from-blue-500 to-purple-500", bgColor: "bg-blue-50", textColor: "text-blue-600" },
-  { id: "javascript", name: "JavaScript", icon: "⚡", color: "from-yellow-400 to-yellow-500", bgColor: "bg-yellow-50", textColor: "text-yellow-600" },
-  { id: "typescript", name: "TypeScript", icon: "📘", color: "from-blue-600 to-blue-700", bgColor: "bg-blue-50", textColor: "text-blue-700" },
-  { id: "java", name: "Java", icon: "☕", color: "from-red-500 to-red-600", bgColor: "bg-red-50", textColor: "text-red-600" },
-  { id: "c", name: "C", icon: "⚙️", color: "from-gray-600 to-gray-700", bgColor: "bg-gray-50", textColor: "text-gray-700" },
-  { id: "cpp", name: "C++", icon: "🔧", color: "from-blue-600 to-purple-600", bgColor: "bg-purple-50", textColor: "text-purple-600" },
-  { id: "csharp", name: "C#", icon: "💜", color: "from-purple-500 to-purple-600", bgColor: "bg-purple-50", textColor: "text-purple-600" },
-  { id: "go", name: "Go", icon: "🐹", color: "from-cyan-500 to-cyan-600", bgColor: "bg-cyan-50", textColor: "text-cyan-600" },
-  { id: "kotlin", name: "Kotlin", icon: "🎯", color: "from-purple-500 to-orange-500", bgColor: "bg-purple-50", textColor: "text-purple-600" },
-  { id: "swift", name: "Swift", icon: "🍎", color: "from-orange-500 to-red-500", bgColor: "bg-orange-50", textColor: "text-orange-600" },
-  { id: "dsa", name: "DSA", icon: "🧮", color: "from-emerald-500 to-teal-500", bgColor: "bg-emerald-50", textColor: "text-emerald-600" },
-  { id: "numpy", name: "NumPy", icon: "🔢", color: "from-blue-500 to-cyan-500", bgColor: "bg-cyan-50", textColor: "text-cyan-600" },
-  { id: "pandas", name: "Pandas", icon: "🐼", color: "from-blue-600 to-blue-700", bgColor: "bg-blue-50", textColor: "text-blue-700" },
-  { id: "rust", name: "Rust", icon: "🦀", color: "from-orange-600 to-red-600", bgColor: "bg-orange-50", textColor: "text-orange-700" },
+  { id: "python",     name: "Python",     icon: "🐍", tagline: "Easy to read, fun to write",       gradient: "from-sky-400 via-blue-500 to-indigo-600",     ring: "ring-blue-300",     level: "Beginner" },
+  { id: "javascript", name: "JavaScript", icon: "⚡", tagline: "Power the entire web",              gradient: "from-amber-300 via-yellow-400 to-orange-500", ring: "ring-yellow-300",   level: "Beginner" },
+  { id: "html",       name: "HTML",       icon: "🌐", tagline: "Build your first webpage",          gradient: "from-orange-400 via-red-400 to-rose-500",     ring: "ring-orange-300",   level: "Beginner" },
+  { id: "css",        name: "CSS",        icon: "🎨", tagline: "Style with creativity",             gradient: "from-cyan-400 via-blue-500 to-purple-500",    ring: "ring-cyan-300",     level: "Beginner" },
+  { id: "typescript", name: "TypeScript", icon: "📘", tagline: "JavaScript with superpowers",       gradient: "from-blue-500 via-indigo-500 to-blue-700",    ring: "ring-blue-300",     level: "Intermediate" },
+  { id: "java",       name: "Java",       icon: "☕", tagline: "Write once, run everywhere",        gradient: "from-rose-500 via-red-500 to-orange-600",     ring: "ring-rose-300",     level: "Intermediate" },
+  { id: "cpp",        name: "C++",        icon: "🔧", tagline: "Speed meets control",               gradient: "from-indigo-500 via-purple-500 to-fuchsia-600", ring: "ring-purple-300",  level: "Advanced" },
+  { id: "c",          name: "C",          icon: "⚙️", tagline: "The mother of languages",           gradient: "from-slate-500 via-slate-600 to-slate-800",   ring: "ring-slate-300",    level: "Intermediate" },
+  { id: "csharp",     name: "C#",         icon: "💜", tagline: "Build apps & games",                gradient: "from-fuchsia-500 via-purple-500 to-violet-700", ring: "ring-fuchsia-300", level: "Intermediate" },
+  { id: "sql",        name: "SQL",        icon: "🗃️", tagline: "Talk to your data",                 gradient: "from-orange-400 via-amber-500 to-yellow-600", ring: "ring-orange-300",   level: "Beginner" },
+  { id: "r",          name: "R",          icon: "📊", tagline: "Statistics made simple",            gradient: "from-sky-400 via-cyan-500 to-teal-500",       ring: "ring-cyan-300",     level: "Intermediate" },
+  { id: "go",         name: "Go",         icon: "🐹", tagline: "Simple, fast, modern",              gradient: "from-cyan-400 via-teal-500 to-emerald-600",   ring: "ring-cyan-300",     level: "Intermediate" },
+  { id: "kotlin",     name: "Kotlin",     icon: "🎯", tagline: "Modern Android dev",                gradient: "from-purple-500 via-pink-500 to-orange-500",  ring: "ring-pink-300",     level: "Intermediate" },
+  { id: "swift",      name: "Swift",      icon: "🍎", tagline: "Build iOS apps",                    gradient: "from-orange-400 via-red-500 to-pink-500",     ring: "ring-orange-300",   level: "Intermediate" },
+  { id: "rust",       name: "Rust",       icon: "🦀", tagline: "Memory-safe systems",               gradient: "from-orange-500 via-rose-500 to-red-700",     ring: "ring-orange-300",   level: "Advanced" },
+  { id: "dsa",        name: "DSA",        icon: "🧮", tagline: "Crack coding interviews",           gradient: "from-emerald-400 via-teal-500 to-cyan-600",   ring: "ring-emerald-300",  level: "Advanced" },
+  { id: "numpy",      name: "NumPy",      icon: "🔢", tagline: "Numerical computing",               gradient: "from-blue-400 via-sky-500 to-cyan-500",       ring: "ring-sky-300",      level: "Intermediate" },
+  { id: "pandas",     name: "Pandas",     icon: "🐼", tagline: "Data analysis toolkit",             gradient: "from-indigo-500 via-blue-600 to-slate-800",   ring: "ring-indigo-300",   level: "Intermediate" },
 ];
+
+const LEVEL_STYLES: Record<string, string> = {
+  Beginner: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  Intermediate: "bg-amber-100 text-amber-700 border-amber-200",
+  Advanced: "bg-rose-100 text-rose-700 border-rose-200",
+};
 
 export default function Courses() {
   const navigate = useNavigate();
@@ -119,35 +125,62 @@ export default function Courses() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
         >
-          {filteredLanguages.map((lang, index) => (
-            <motion.button
-              key={lang.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.03 }}
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => {
-                const course = courses.find(c => 
-                  c.category?.toLowerCase() === lang.id || 
-                  c.title.toLowerCase().includes(lang.name.toLowerCase())
-                );
-                if (course) {
-                  navigate(`/courses/${course.slug}`);
-                } else {
-                  navigate(`/courses?category=${lang.id}`);
+          {filteredLanguages.map((lang, index) => {
+            const course = courses.find(
+              (c) =>
+                c.category?.toLowerCase() === lang.id ||
+                c.title.toLowerCase().includes(lang.name.toLowerCase())
+            );
+            return (
+              <motion.button
+                key={lang.id}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.03 }}
+                whileHover={{ y: -6 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() =>
+                  course
+                    ? navigate(`/courses/${course.slug}`)
+                    : navigate(`/courses?category=${lang.id}`)
                 }
-              }}
-              className={`${lang.bgColor} border border-slate-200 rounded-xl p-4 flex items-center gap-3 hover:shadow-lg hover:border-slate-300 transition-all duration-200 text-left group`}
-            >
-              <span className="text-2xl">{lang.icon}</span>
-              <span className={`font-semibold ${lang.textColor}`}>{lang.name}</span>
-            </motion.button>
-          ))}
+                className="group relative text-left rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-2xl transition-all duration-300"
+              >
+                {/* Thumbnail / hero */}
+                <div className={`relative h-32 bg-gradient-to-br ${lang.gradient} flex items-center justify-center overflow-hidden`}>
+                  <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_20%_20%,white_2px,transparent_2px),radial-gradient(circle_at_80%_60%,white_1.5px,transparent_1.5px)] [background-size:40px_40px,28px_28px]" />
+                  <motion.span
+                    className="text-6xl drop-shadow-lg"
+                    whileHover={{ rotate: [0, -8, 8, 0], scale: 1.15 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {lang.icon}
+                  </motion.span>
+                  <span className={`absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full border ${LEVEL_STYLES[lang.level]}`}>
+                    {lang.level}
+                  </span>
+                </div>
+
+                {/* Body */}
+                <div className="p-4">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="text-lg font-bold text-foreground">{lang.name}</h3>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{lang.tagline}</p>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1"><BookOpen className="w-3.5 h-3.5" />{course?.total_lessons ?? "—"} lessons</span>
+                    <span className="flex items-center gap-1"><Flame className="w-3.5 h-3.5 text-orange-500" />XP</span>
+                  </div>
+                </div>
+              </motion.button>
+            );
+          })}
         </motion.div>
       </div>
+
 
       {/* Pro Section */}
       <div className="max-w-6xl mx-auto px-4 mb-20">
@@ -191,86 +224,84 @@ export default function Courses() {
               Available Courses
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {courses.map((course, index) => (
-                <motion.div
-                  key={course.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 * index }}
-                >
-                  <GlassCard className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-shadow">
-                    {/* Thumbnail */}
-                    <div className="relative h-40 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                      {course.thumbnail_url ? (
-                        <img
-                          src={course.thumbnail_url}
-                          alt={course.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <BookOpen className="w-12 h-12 text-blue-500/50" />
-                      )}
-                      {course.is_featured && (
-                        <div className="absolute top-3 right-3">
-                          <Badge className="bg-gradient-to-r from-amber-400 to-orange-500 text-white border-0">
-                            <Star className="w-3 h-3 mr-1" />
-                            Featured
+              {courses.map((course, index) => {
+                const meta = LANGUAGE_COURSES.find(
+                  (l) => l.id === course.category?.toLowerCase() ||
+                         course.title.toLowerCase().includes(l.name.toLowerCase())
+                );
+                const gradient = meta?.gradient ?? "from-indigo-500 via-purple-500 to-pink-500";
+                const icon = meta?.icon ?? "📚";
+                const diffKey = course.difficulty
+                  ? course.difficulty.charAt(0).toUpperCase() + course.difficulty.slice(1).toLowerCase()
+                  : "Beginner";
+                return (
+                  <motion.div
+                    key={course.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.05 * index }}
+                    whileHover={{ y: -6 }}
+                    className="group"
+                  >
+                    <div
+                      onClick={() => navigate(`/courses/${course.slug}`)}
+                      className="cursor-pointer h-full flex flex-col overflow-hidden rounded-2xl bg-card border border-border shadow-sm hover:shadow-2xl transition-all duration-300"
+                    >
+                      {/* Thumbnail */}
+                      <div className={`relative h-44 bg-gradient-to-br ${gradient} flex items-center justify-center overflow-hidden`}>
+                        {course.thumbnail_url ? (
+                          <img src={course.thumbnail_url} alt={course.title} className="w-full h-full object-cover" />
+                        ) : (
+                          <>
+                            <div className="absolute inset-0 opacity-25 [background-image:radial-gradient(circle_at_25%_25%,white_2px,transparent_2px),radial-gradient(circle_at_75%_75%,white_1.5px,transparent_1.5px)] [background-size:36px_36px,24px_24px]" />
+                            <motion.span
+                              className="text-7xl drop-shadow-xl"
+                              whileHover={{ scale: 1.15, rotate: [0, -6, 6, 0] }}
+                              transition={{ duration: 0.5 }}
+                            >
+                              {icon}
+                            </motion.span>
+                          </>
+                        )}
+                        <span className={`absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${LEVEL_STYLES[diffKey] ?? LEVEL_STYLES.Beginner}`}>
+                          {diffKey}
+                        </span>
+                        {course.is_featured && (
+                          <Badge className="absolute top-3 right-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white border-0 shadow-md">
+                            <Sparkles className="w-3 h-3 mr-1" /> Featured
                           </Badge>
-                        </div>
-                      )}
-                    </div>
+                        )}
+                      </div>
 
-                    {/* Content */}
-                    <div className="p-6 flex-1 flex flex-col">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge
-                          variant="outline"
-                          className={
-                            course.difficulty === "beginner"
-                              ? "bg-emerald-50 text-emerald-600 border-emerald-200"
-                              : course.difficulty === "intermediate"
-                              ? "bg-amber-50 text-amber-600 border-amber-200"
-                              : "bg-red-50 text-red-600 border-red-200"
-                          }
+                      {/* Content */}
+                      <div className="p-5 flex-1 flex flex-col">
+                        <h3 className="text-lg font-bold text-foreground mb-1.5 group-hover:text-primary transition-colors">
+                          {course.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-4 flex-1 line-clamp-2">
+                          {course.description}
+                        </p>
+
+                        <div className="flex items-center justify-between text-xs text-muted-foreground mb-4 pt-3 border-t border-border">
+                          <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{course.estimated_hours}h</span>
+                          <span className="flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" />{course.total_lessons} lessons</span>
+                          <span className="flex items-center gap-1.5"><Trophy className="w-3.5 h-3.5 text-amber-500" />{course.xp_reward} XP</span>
+                        </div>
+
+                        <Button
+                          className={`w-full bg-gradient-to-r ${gradient} text-white border-0 hover:opacity-90 hover:shadow-lg transition-all`}
+                          onClick={(e) => { e.stopPropagation(); navigate(`/courses/${course.slug}`); }}
                         >
-                          {course.difficulty}
-                        </Badge>
+                          Start Learning
+                          <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </Button>
                       </div>
-
-                      <h3 className="text-lg font-semibold text-foreground mb-2">
-                        {course.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-4 flex-1 line-clamp-2">
-                        {course.description}
-                      </p>
-
-                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          <span>{course.estimated_hours}h</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <BookOpen className="w-4 h-4" />
-                          <span>{course.total_lessons} lessons</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Star className="w-4 h-4 text-amber-500" />
-                          <span>{course.xp_reward} XP</span>
-                        </div>
-                      </div>
-
-                      <Button 
-                        className="w-full group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                        onClick={() => navigate(`/courses/${course.slug}`)}
-                      >
-                        Start Course
-                        <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                      </Button>
                     </div>
-                  </GlassCard>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
+
           </motion.div>
         </div>
       )}
