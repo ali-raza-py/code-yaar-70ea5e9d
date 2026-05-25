@@ -50,6 +50,28 @@ const LEVEL_STYLES: Record<string, string> = {
   Advanced: "bg-rose-100 text-rose-700 border-rose-200",
 };
 
+const LANGUAGE_TONES: Record<string, { bg: string; text: string }> = {
+  python:     { bg: "bg-blue-50",    text: "text-blue-600" },
+  sql:        { bg: "bg-orange-50",  text: "text-orange-600" },
+  r:          { bg: "bg-blue-50",    text: "text-blue-500" },
+  html:       { bg: "bg-orange-50",  text: "text-orange-600" },
+  css:        { bg: "bg-blue-50",    text: "text-blue-600" },
+  javascript: { bg: "bg-yellow-50",  text: "text-yellow-600" },
+  typescript: { bg: "bg-blue-50",    text: "text-blue-700" },
+  java:       { bg: "bg-red-50",     text: "text-red-600" },
+  c:          { bg: "bg-gray-50",    text: "text-gray-700" },
+  cpp:        { bg: "bg-purple-50",  text: "text-purple-600" },
+  csharp:     { bg: "bg-purple-50",  text: "text-purple-600" },
+  go:         { bg: "bg-cyan-50",    text: "text-cyan-600" },
+  kotlin:     { bg: "bg-purple-50",  text: "text-purple-600" },
+  swift:      { bg: "bg-orange-50",  text: "text-orange-600" },
+  dsa:        { bg: "bg-emerald-50", text: "text-emerald-600" },
+  numpy:      { bg: "bg-cyan-50",    text: "text-cyan-600" },
+  pandas:     { bg: "bg-blue-50",    text: "text-blue-700" },
+  rust:       { bg: "bg-orange-50",  text: "text-orange-700" },
+};
+
+
 export default function Courses() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState<Course[]>([]);
