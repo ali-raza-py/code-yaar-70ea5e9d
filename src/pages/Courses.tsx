@@ -50,6 +50,28 @@ const LEVEL_STYLES: Record<string, string> = {
   Advanced: "bg-rose-100 text-rose-700 border-rose-200",
 };
 
+const LANGUAGE_TONES: Record<string, { bg: string; text: string }> = {
+  python:     { bg: "bg-blue-50",    text: "text-blue-600" },
+  sql:        { bg: "bg-orange-50",  text: "text-orange-600" },
+  r:          { bg: "bg-blue-50",    text: "text-blue-500" },
+  html:       { bg: "bg-orange-50",  text: "text-orange-600" },
+  css:        { bg: "bg-blue-50",    text: "text-blue-600" },
+  javascript: { bg: "bg-yellow-50",  text: "text-yellow-600" },
+  typescript: { bg: "bg-blue-50",    text: "text-blue-700" },
+  java:       { bg: "bg-red-50",     text: "text-red-600" },
+  c:          { bg: "bg-gray-50",    text: "text-gray-700" },
+  cpp:        { bg: "bg-purple-50",  text: "text-purple-600" },
+  csharp:     { bg: "bg-purple-50",  text: "text-purple-600" },
+  go:         { bg: "bg-cyan-50",    text: "text-cyan-600" },
+  kotlin:     { bg: "bg-purple-50",  text: "text-purple-600" },
+  swift:      { bg: "bg-orange-50",  text: "text-orange-600" },
+  dsa:        { bg: "bg-emerald-50", text: "text-emerald-600" },
+  numpy:      { bg: "bg-cyan-50",    text: "text-cyan-600" },
+  pandas:     { bg: "bg-blue-50",    text: "text-blue-700" },
+  rust:       { bg: "bg-orange-50",  text: "text-orange-700" },
+};
+
+
 export default function Courses() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState<Course[]>([]);
@@ -125,61 +147,40 @@ export default function Courses() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
         >
           {filteredLanguages.map((lang, index) => {
-            const course = courses.find(
-              (c) =>
-                c.category?.toLowerCase() === lang.id ||
-                c.title.toLowerCase().includes(lang.name.toLowerCase())
-            );
+            const tone = LANGUAGE_TONES[lang.id] ?? { bg: "bg-slate-50", text: "text-slate-700" };
             return (
               <motion.button
                 key={lang.id}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.03 }}
-                whileHover={{ y: -6 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() =>
-                  course
-                    ? navigate(`/courses/${course.slug}`)
-                    : navigate(`/courses?category=${lang.id}`)
-                }
-                className="group relative text-left rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-2xl transition-all duration-300"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  const course = courses.find(
+                    (c) =>
+                      c.category?.toLowerCase() === lang.id ||
+                      c.title.toLowerCase().includes(lang.name.toLowerCase())
+                  );
+                  if (course) {
+                    navigate(`/courses/${course.slug}`);
+                  } else {
+                    navigate(`/courses?category=${lang.id}`);
+                  }
+                }}
+                className={`${tone.bg} border border-slate-200 rounded-xl p-4 flex items-center gap-3 hover:shadow-lg hover:border-slate-300 transition-all duration-200 text-left group`}
               >
-                {/* Thumbnail / hero */}
-                <div className={`relative h-32 bg-gradient-to-br ${lang.gradient} flex items-center justify-center overflow-hidden`}>
-                  <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_20%_20%,white_2px,transparent_2px),radial-gradient(circle_at_80%_60%,white_1.5px,transparent_1.5px)] [background-size:40px_40px,28px_28px]" />
-                  <motion.span
-                    className="text-6xl drop-shadow-lg"
-                    whileHover={{ rotate: [0, -8, 8, 0], scale: 1.15 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {lang.icon}
-                  </motion.span>
-                  <span className={`absolute top-3 right-3 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-full border ${LEVEL_STYLES[lang.level]}`}>
-                    {lang.level}
-                  </span>
-                </div>
-
-                {/* Body */}
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-lg font-bold text-foreground">{lang.name}</h3>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all" />
-                  </div>
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{lang.tagline}</p>
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1"><BookOpen className="w-3.5 h-3.5" />{course?.total_lessons ?? "—"} lessons</span>
-                    <span className="flex items-center gap-1"><Flame className="w-3.5 h-3.5 text-orange-500" />XP</span>
-                  </div>
-                </div>
+                <span className="text-2xl">{lang.icon}</span>
+                <span className={`font-semibold ${tone.text}`}>{lang.name}</span>
               </motion.button>
             );
           })}
         </motion.div>
       </div>
+
 
 
       {/* Pro Section */}
