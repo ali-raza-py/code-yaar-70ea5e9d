@@ -124,7 +124,7 @@ export function parseMarkdown(text: string): string {
 
   // Sanitize HTML
   return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'em', 'code', 'a', 'ul', 'ol', 'li', 'hr', 'br'],
+    ALLOWED_TAGS: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'em', 'code', 'a', 'ul', 'ol', 'li', 'hr', 'br', 'blockquote'],
     ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
   });
 }
