@@ -83,6 +83,10 @@ export function parseMarkdown(text: string): string {
   html = html.replace(/^\*\*\*$/gm, '<hr />');
   html = html.replace(/^___$/gm, '<hr />');
 
+  // Blockquotes (> text)
+  html = html.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
+  html = html.replace(/(<blockquote>.*?<\/blockquote>\n?)+/g, (match) => match.replace(/<\/blockquote>\n?<blockquote>/g, '<br />'));
+
   // Unordered lists (- or * items)
   html = html.replace(/^[\-\*] (.+)$/gm, '<li>$1</li>');
   // Wrap consecutive <li> items in <ul>
