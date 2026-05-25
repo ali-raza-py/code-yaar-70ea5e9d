@@ -224,86 +224,84 @@ export default function Courses() {
               Available Courses
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {courses.map((course, index) => (
-                <motion.div
-                  key={course.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 * index }}
-                >
-                  <GlassCard className="h-full flex flex-col overflow-hidden hover:shadow-xl transition-shadow">
-                    {/* Thumbnail */}
-                    <div className="relative h-40 bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                      {course.thumbnail_url ? (
-                        <img
-                          src={course.thumbnail_url}
-                          alt={course.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <BookOpen className="w-12 h-12 text-blue-500/50" />
-                      )}
-                      {course.is_featured && (
-                        <div className="absolute top-3 right-3">
-                          <Badge className="bg-gradient-to-r from-amber-400 to-orange-500 text-white border-0">
-                            <Star className="w-3 h-3 mr-1" />
-                            Featured
+              {courses.map((course, index) => {
+                const meta = LANGUAGE_COURSES.find(
+                  (l) => l.id === course.category?.toLowerCase() ||
+                         course.title.toLowerCase().includes(l.name.toLowerCase())
+                );
+                const gradient = meta?.gradient ?? "from-indigo-500 via-purple-500 to-pink-500";
+                const icon = meta?.icon ?? "📚";
+                const diffKey = course.difficulty
+                  ? course.difficulty.charAt(0).toUpperCase() + course.difficulty.slice(1).toLowerCase()
+                  : "Beginner";
+                return (
+                  <motion.div
+                    key={course.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.05 * index }}
+                    whileHover={{ y: -6 }}
+                    className="group"
+                  >
+                    <div
+                      onClick={() => navigate(`/courses/${course.slug}`)}
+                      className="cursor-pointer h-full flex flex-col overflow-hidden rounded-2xl bg-card border border-border shadow-sm hover:shadow-2xl transition-all duration-300"
+                    >
+                      {/* Thumbnail */}
+                      <div className={`relative h-44 bg-gradient-to-br ${gradient} flex items-center justify-center overflow-hidden`}>
+                        {course.thumbnail_url ? (
+                          <img src={course.thumbnail_url} alt={course.title} className="w-full h-full object-cover" />
+                        ) : (
+                          <>
+                            <div className="absolute inset-0 opacity-25 [background-image:radial-gradient(circle_at_25%_25%,white_2px,transparent_2px),radial-gradient(circle_at_75%_75%,white_1.5px,transparent_1.5px)] [background-size:36px_36px,24px_24px]" />
+                            <motion.span
+                              className="text-7xl drop-shadow-xl"
+                              whileHover={{ scale: 1.15, rotate: [0, -6, 6, 0] }}
+                              transition={{ duration: 0.5 }}
+                            >
+                              {icon}
+                            </motion.span>
+                          </>
+                        )}
+                        <span className={`absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border ${LEVEL_STYLES[diffKey] ?? LEVEL_STYLES.Beginner}`}>
+                          {diffKey}
+                        </span>
+                        {course.is_featured && (
+                          <Badge className="absolute top-3 right-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white border-0 shadow-md">
+                            <Sparkles className="w-3 h-3 mr-1" /> Featured
                           </Badge>
-                        </div>
-                      )}
-                    </div>
+                        )}
+                      </div>
 
-                    {/* Content */}
-                    <div className="p-6 flex-1 flex flex-col">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge
-                          variant="outline"
-                          className={
-                            course.difficulty === "beginner"
-                              ? "bg-emerald-50 text-emerald-600 border-emerald-200"
-                              : course.difficulty === "intermediate"
-                              ? "bg-amber-50 text-amber-600 border-amber-200"
-                              : "bg-red-50 text-red-600 border-red-200"
-                          }
+                      {/* Content */}
+                      <div className="p-5 flex-1 flex flex-col">
+                        <h3 className="text-lg font-bold text-foreground mb-1.5 group-hover:text-primary transition-colors">
+                          {course.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-4 flex-1 line-clamp-2">
+                          {course.description}
+                        </p>
+
+                        <div className="flex items-center justify-between text-xs text-muted-foreground mb-4 pt-3 border-t border-border">
+                          <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{course.estimated_hours}h</span>
+                          <span className="flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" />{course.total_lessons} lessons</span>
+                          <span className="flex items-center gap-1.5"><Trophy className="w-3.5 h-3.5 text-amber-500" />{course.xp_reward} XP</span>
+                        </div>
+
+                        <Button
+                          className={`w-full bg-gradient-to-r ${gradient} text-white border-0 hover:opacity-90 hover:shadow-lg transition-all`}
+                          onClick={(e) => { e.stopPropagation(); navigate(`/courses/${course.slug}`); }}
                         >
-                          {course.difficulty}
-                        </Badge>
+                          Start Learning
+                          <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                        </Button>
                       </div>
-
-                      <h3 className="text-lg font-semibold text-foreground mb-2">
-                        {course.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground mb-4 flex-1 line-clamp-2">
-                        {course.description}
-                      </p>
-
-                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          <span>{course.estimated_hours}h</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <BookOpen className="w-4 h-4" />
-                          <span>{course.total_lessons} lessons</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Star className="w-4 h-4 text-amber-500" />
-                          <span>{course.xp_reward} XP</span>
-                        </div>
-                      </div>
-
-                      <Button 
-                        className="w-full group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                        onClick={() => navigate(`/courses/${course.slug}`)}
-                      >
-                        Start Course
-                        <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                      </Button>
                     </div>
-                  </GlassCard>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </div>
+
           </motion.div>
         </div>
       )}
